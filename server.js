@@ -13,7 +13,7 @@ app.use(cors());
 // Habilitar CORS
 app.use(express.static('public')); // Servir archivos estáticos 
 app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
-app.listen(3000, '127.0.0.1', () => {
+app.listen(process.env.API_HOST_URL, () => {
     console.log('Servidor escuchando en http://127.0.0.1:3000');
 });
 
