@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.static('public')); // Servir archivos estáticos 
 app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
 app.listen(process.env.API_HOST_URL, () => {
-    console.log('Servidor escuchando en http://127.0.0.1:3000');
+    console.log(`servidor levantado ${process.env.API_HOST_URL}`);
 });
 
 
