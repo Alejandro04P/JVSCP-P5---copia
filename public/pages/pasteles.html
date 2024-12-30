@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/media q.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Tienda de Repostería</title>
+</head>
+<body>
+    <script src="../JS/funcionalidad.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <header>
+            <div class="header-logo-title">
+                <img src="../imagenes/logo.png" alt="Logo" class="logo">
+                <h1>REPOSHOP</h1>
+            </div>
+        </header>
+    </header>
+
+    <nav class="navbar navbar-expand-lg  navbar-dark sticky-top">
+        <div class="container">
+            <button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto gap-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#social-icons">Redes Sociales</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Productos</a>
+                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="productsDropdown">
+                            <li><a class="dropdown-item" href="../pages/pasteles.html">Pasteles</a></li>
+                            <li><a class="dropdown-item" href="../pages/donas.html">Donas</a></li>
+                            <li><a class="dropdown-item" href="../pages/galletas.html">Galletas</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="../pages/contacto.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../pages/carrito.html">Carrito</a></li>
+                </ul>
+                <div class="navbar-buttons ms-auto">
+                    <a href="../public/iniciar.html" class="btn btn-outline-light me-2 " id="loginBtn">Iniciar Sesión</a>
+                    <a href="../public/registro.html" class="btn btn-outline-light me-2" id="registerBtn">Crear Cuenta</a>
+                </div>  
+            </div>
+        </div>
+    </nav>
+    <div class="contfin">
+        <div class="left-image">
+            <img src="../imagenes/pastelizq.jpeg"alt= "Imagen de Repostería">
+        </div>
+        <div class="product-section">
+            <main class="product-grid">
+                <div class="product">
+                    <img src="../imagenes/pchoco.jpg"  alt="Torta de Chocolate">
+                    <h3 class = "card-title"> Torta de Chocolate</h3>
+                    <h3 class="card-price">    $14.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                <script>
+                    function increaseQuantity(button) {
+                        let quantityInput = button.previousElementSibling;
+                        quantityInput.value = parseInt(quantityInput.value) + 1;
+                    }
+
+                    function decreaseQuantity(button) {
+                        let quantityInput = button.nextElementSibling;
+                        if (quantityInput.value > 1) {
+                            quantityInput.value = parseInt(quantityInput.value) - 1;
+                        }
+                    }
+                </script>
+               
+                <div class="product">
+                    <img src="../imagenes/pvaini.jpg"  alt="Torta de Vainilla">
+                    <h3 class="card-title">Torta de Vainilla</h3>
+                    <h3 class="card-price">$14.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+
+                <div class="product">
+                    <img src="../imagenes/pred.jpg"  alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta Red Velvet</h3>
+                    <h3 class="card-price">$17.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                <div class="product">
+                    <img src="../imagenes/tlimo.jpeg"  alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta de Limón</h3>
+                    <h3 class="card-price">$14.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                <div class="product">
+                    <img src="../imagenes/toreo.jpeg" alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta de Oreo</h3>
+                    <h3 class="card-price">$17.49</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                <div class="product">
+                    <img src="../imagenes/ttres.jpeg"  alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta Tres Leches</h3>
+                    <h3 class="card-price">$15.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                <div class="product">
+                    <img src="../imagenes/pmango.jpeg"   alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta de Mango</h3>
+                    <h3 class="card-price">$16.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="../imagenes/pfresa.jpeg"  alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta de Fresa</h3>
+                    <h3 class="card-price">$13.49</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="../imagenes/pzanahoria.jpeg" alt="Torta Red Velvet">
+                    <h3 class="card-title">Torta de Zanahoria</h3>
+                    <h3 class="card-price">$15.99</h3>
+                    <p>Selecciona tu tipo de Relleno:</p>
+                    <select class="flavor-select">
+                        <option value="chocolate">Ferrero</option>
+                        <option value="vainilla">Fondant</option>
+                        <option value="fresa">Ganache de Chocolate</option>
+                        <option value="red_velvet">Glaseado Real </option>
+                    </select>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                        <input type="number" class="quantity" value="1" min="1" />
+                        <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                    </div>
+                    <button class="add-to-cart" onclick="addToCart(this)">Añadir al carrito</button>
+                </div>
+                
+                
+            </main>
+        </div> 
+    </div>
+
+    <div id="social-icons" class="social-icons">
+        <a href="#"><img src="../imagenes/fca.jpg" alt="Facebook"></a>
+        <a href="#"><img src="../imagenes/igca.jpg" alt="Instagram"></a>
+        <a href="#"><img src="../imagenes/waca.jpg" alt="WhatsApp"></a>
+    </div>
+</div>
+    <footer class="footer">
+        <div class="containerfot">
+            <!-- Consejos de Repostería -->
+            <div class="footer-section tips">
+                <h3>Consejos de Repostería</h3>
+                <p>¿Sabías que la mantequilla a temperatura ambiente hace que las galletas sean más suaves y esponjosas? ¡Descubre más consejos en este blog recomendado!</p>
+                <a href="https://www.eldulceobjetivo.com/recetas/" class="footer-link">Visita este blog recomendado</a>
+            </div>
+    
+            <!-- Únete a Nuestra Comunidad -->
+            <div class="footer-section newsletter">
+                <h3>Únete a Nuestra Comunidad</h3>
+                <p>Suscríbete para recibir recetas exclusivas, descuentos especiales y novedades directamente en tu bandeja de entrada.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <hr class="footer-divider">
+            <p>&copy; 2024 Tienda de Repostería. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="../JS/iniciarsecion.js"></script>
+
+</body>
+</html>

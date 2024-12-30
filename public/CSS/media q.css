@@ -1,0 +1,208 @@
+@media (max-width: 1160px) {
+    .inter-left{
+        top: 80px;
+    }
+
+}
+@media (max-width: 984px) {
+    .inter-left{
+        top: 50px;
+    }
+
+}
+@media (max-width: 900px) {
+    .header-logo-title {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .header-logo-title h1 {
+        display: none; /* Oculta el título en pantallas pequeñas */
+    }
+    header {
+        flex-direction: column; /* Cambia el header a una columna */
+        text-align: center; /* Centra todo */
+    }
+    .left-image {
+        display: none; 
+    }
+   
+}
+@media (max-width: 768px) {  
+
+     /* Ajuste del tamaño de las imágenes de los productos */
+    .car-pizq{
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-item{
+        flex-direction: column;
+        align-items: center;
+    }
+ 
+    .logo {
+        margin: 0 auto; /* Centra el logo horizontalmente */
+    }
+    /*carrito*/  
+    .cart-container {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;   
+    }
+    .checkout-button,
+    .apply-button {
+        font-size: 1em;
+        padding: 8px 10px;
+    }   
+    /*footer */
+    .containerfot {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .footer-section {
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .newsletter-form input[type="email"] {
+        margin: 0 0 0.5rem 0;
+        width: 100%;
+    }
+   
+    /*PRODUCTOS*/
+     /* Ajustes para productos en la cuadrícula */
+    .product-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Solo una columna para productos en pantallas pequeñas */
+        gap: 1rem;
+        padding: 2.5em 1rem; /* Espacio a los lados */
+        justify-items: center; /* Centra los productos horizontalmente */
+    }
+    .product {
+        padding: 15px;
+        max-width: 400px; /* Ancho máximo del producto */
+        width: 100%; /* Asegura que ocupe el 100% del contenedor */
+    }
+    .product img {
+        max-width: 250px;
+        height: 180px;
+    }
+    
+    .product h3 {
+        font-size: 1.3em;
+    }
+    
+    .product p {
+        font-size: 0.9em;
+    }
+    
+    .quantity-btn {
+        padding: 4px 8px;
+        font-size: 15px;
+    }
+    
+    .quantity {
+        width: 45px;
+        padding: 4px;
+    }
+    #main-img {
+        width: 80%; /* O cualquier valor que prefieras */
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    .product img {
+        width: 80%;
+        max-width: 200px;
+        height: 150px;
+    }
+    .product h3 {
+        font-size: 1.1em;
+    }
+
+    /* Ajuste de los enlaces del menú */
+    nav ul li a {
+        font-size: 1.4em;
+        padding: 8px 15px;
+        align-items: center;
+        
+    }
+    /* Carrito HTML */
+    .left-carimage img {
+        width: 70px;
+        height: 70px;
+    }
+    .product-details h3 {
+        font-size: 1em;
+    }
+    .inter-left {
+        max-width: 100%;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    .checkout-button,
+    .apply-button {
+        font-size: 0.9em;
+        padding: 6px 8px;
+    }
+    .left-imagecarr input[type="text"] {
+        width: 100%;
+        font-size: 0.9em;
+    }
+
+    .left-imagecarr h3,
+    .left-imagecarr h4 {
+        font-size: 1em;
+    }
+    /*PRODUCTOS*/
+    .product-section {
+        display: flex;
+        flex-direction: column; /* Coloca los elementos en columna si es necesario */
+        align-items: center; /* Centra horizontalmente los elementos */
+        text-align: center; /* Centra el texto */
+        margin: 0 auto; /* Centra el contenedor */
+        padding: 10px; /* Espacio para evitar que los elementos queden pegados a los bordes */
+        width: 100%; 
+    }
+    .product-grid {
+        justify-items: center; /* Centra los elementos horizontalmente */
+        padding: 20px; /* Opcional, añade espacio alrededor */
+        align-items: center;
+        flex-direction: column;
+        width: 100%; 
+    }
+    
+    .product {
+        flex-grow: 1;
+        padding: 10px;
+    }
+    
+    .product p {
+        font-size: 0.8em;
+    }
+    
+    .quantity-selector {
+        flex-direction: row;
+        gap: 5px;
+    }
+    
+    .quantity-btn {
+        padding: 4px 6px;
+        font-size: 14px;
+    }
+    
+    .quantity {
+        width: 40px;
+        padding: 4px;
+    }
+    
+}

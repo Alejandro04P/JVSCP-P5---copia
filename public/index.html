@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/media q.css">
+    <title>Tienda de Repostería</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <header>
+            <div class="header-logo-title">
+                <img src="imagenes/logo.png" alt="Logo" class="logo">
+                <h1>REPOSHOP</h1>
+            </div>
+        </header>
+    </header>
+    
+    <nav class="navbar navbar-expand-lg  navbar-dark sticky-top">
+        <div class="container">
+            <button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto gap-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#social-icons">Redes Sociales</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Productos</a>
+                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="productsDropdown">
+                            <li><a class="dropdown-item" href="pages/pasteles.html">Pasteles</a></li>
+                            <li><a class="dropdown-item" href="pages/donas.html">Donas</a></li>
+                            <li><a class="dropdown-item" href="pages/galletas.html">Galletas</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="pages/contacto.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/carrito.html">Carrito</a></li>
+                    <li id="change-background" class="nav-item"><a class="nav-link" href="#" id="intact">Back</a></li>
+                </ul>
+                <div class="navbar-buttons ms-auto">
+                    <a href="iniciar.html" class="btn btn-outline-light me-2 " id="loginBtn">Iniciar Sesión</a>
+                    <a href="registro.html" class="btn btn-outline-light me-2" id="registerBtn">Crear Cuenta</a>
+                </div>   
+            </div>
+        </div>
+    </nav>
+    
+    <div class="contfin">
+        <!-- Imagen a la izquierda -->
+        <div class="left-image">
+            <img src="imagenes/foniz.jpg"alt= "Imagen de Repostería">
+        </div>
+
+        <!-- Contenido a la derecha que ocupa el 65% -->
+        <div class="product-section">
+            <div class="product-item shadow">
+                <div class="product-text">
+                    <h2>Delicias Artesanales para Cada Gusto</h2>
+                    <p>Presentamos nuestras suaves tortas con coberturas exquisitas, además de las donas
+                         glaseadas y las galletas recién horneadas, cada una hecha para satisfacer 
+                         los gustos más exigentes ✨.
+                    </p>
+                </div>
+                <div class="product-image">
+                    <img src="imagenes/deli.jpg" alt="Pumpkin Pie Cappuccino">
+                </div>
+            </div>
+        
+            <div class="product-item1 alt-bg shadow">
+                <div class="product-image">
+                    <img src="imagenes/ingre.jpg" alt="Zombie Shake">
+                </div>
+                <div class="product-text">
+                    <h2>Sabor Natural en Cada Bocado</h2>
+                    <p>Nuestros productos son elaborados con un compromiso 
+                        absoluto hacia la calidad y la frescura. Cada ingrediente es cuidadosamente seleccionado para 
+                        garantizar que sólo lo mejor llegue a tu mesa. Nos enorgullece utilizar productos naturales, libres de 
+                        conservantes artificiales y aditivos innecesarios, lo cual se refleja en el sabor auténtico y la textura única 
+                        de cada uno de nuestros artículos. ❤️.
+                    </p>
+                </div>
+            </div>
+        
+            <div class="product-item shadow">
+                <div class="product-text">
+                    <h2>¡Ofertas y Novedades Especiales!</h2>
+                    <p>Recarga tu energía con nuestras deliciosas donas 2 x 1 en sabores de oreo y lotus 😋.
+                    </p>
+                </div>
+                <div class="product-image">
+                    <img src="imagenes/promo.jpg" alt="Barra de Proteína Sweet & Coffee">
+                </div>
+            </div>
+        
+            <div class="product-item1 alt-bg shadow" >
+                <div class="product-image">
+                    <img src="imagenes/line.jpg" alt="Yogurt Griego">
+                </div>
+                <div class="product-text">
+                    <h2>
+                        Pedidos en Línea Reposhop
+                    </h2>
+                    <p> En tu carrito, ahora puedes visualizar tus productos favoritos seleccionados, y podrás recogerlas en nuestro local, Calle: Av.Principal,
+                        Sector: Pomasqui o pedirlas para tu domicilio. Recuerda que con tus consumos en nuestra App
+                         ganas estrellas canjeables para próximas compras ⚡.
+                    </p>
+                </div>
+            </div>         
+        </div>
+ </div>
+
+    
+
+
+ <div id="social-icons" class="social-icons">
+    <a href="#"><img src="imagenes/fca.jpg" alt="Facebook"></a>
+    <a href="#"><img src="imagenes/igca.jpg" alt="Instagram"></a>
+    <a href="#"><img src="imagenes/waca.jpg" alt="WhatsApp"></a>
+</div>
+<footer class="footer">
+    <div class="containerfot">
+        <!-- Consejos de Repostería -->
+        <div class="footer-section tips">
+            <h3>Consejos de Repostería</h3>
+            <p>¿Sabías que la mantequilla a temperatura ambiente hace que las galletas sean más suaves y esponjosas? ¡Descubre más consejos en este blog recomendado!</p>
+            <a href="https://www.eldulceobjetivo.com/recetas/" class="footer-link">Visita este blog recomendado</a>
+        </div>
+
+        <!-- Únete a Nuestra Comunidad -->
+        <div class="footer-section newsletter">
+            <h3>Únete a Nuestra Comunidad</h3>
+            <p>Suscríbete para recibir recetas exclusivas, descuentos especiales y novedades directamente en tu bandeja de entrada.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <button type="submit">Suscribirse</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <hr class="footer-divider">
+        <p>&copy; 2024 Tienda de Repostería. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script src="JS/iniciarsecion.js"></script>
+<script src="JS/background.js"></script> 
+</body>
+</html>

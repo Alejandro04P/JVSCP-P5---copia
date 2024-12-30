@@ -1,0 +1,333 @@
+/*Header*/
+
+.bg-light-custom {
+    background-color: #f4e1d2 !important; /* Fondo personalizado */
+    align-items: center  !important;
+}
+
+.logo-custom {
+    width: 10em !important; /* Ajusta el tamaño a 30em o un valor mayor para que sea más grande */
+    height: 8em !important; /* Mantiene la proporción */
+    max-width: 100% !important; /* Para que no crezca más allá del contenedor */
+}
+
+.bg-light-custom .container{
+    padding: 0 !important; 
+}
+
+.text-brown {
+    color: #5a3826; /* Marrón similar al diseño deseado */
+    font-family: 'Georgia', serif; /* Para mantener un estilo elegante */
+}
+
+h1 {
+    font-size: 2.5em !important; /* Ajusta el tamaño del título */
+    margin-left: 8em !important;
+}
+
+/*NAVr*/
+/* Personalización del navbar */
+.navbar {
+    background-color: #392217;
+    padding: 0.25em;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-family: 'Georgia', serif;
+    color: #f7d3a7;
+    font-size: 1.2em;
+    padding: 10px 20px;
+}
+
+.navbar-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-buttons .btn {
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    padding: 5px 15px;
+}
+
+.dropdown-menu {
+    background-color: #392217;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.dropdown-item {
+    text-align: center;
+    padding: 10px;
+    color: #f7d3a7;
+}
+.dropdown-menu {
+    z-index: 1050; /* Asegura que se muestre por encima */
+}
+
+@media (max-width: 768px) {
+    .navbar-buttons .btn {
+        font-size: 0.9em;
+        padding: 5px 10px;
+    }
+}
+
+
+/* Ajustes para dispositivos móviles */
+.menu-toggle {
+    display: block;
+    color: #f7d3a7;
+    font-size: 1.5em;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+/* INFO PAG1 */
+/* Navbar siempre encima */
+*, ::after, ::before {
+    box-sizing: content-box !important;
+}
+
+.navbar {
+    z-index: 1030;
+}
+.left-image img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover; /* Ajusta la imagen para cubrir todo el contenedor sin distorsionarse */
+}
+    
+    .product-section {
+        padding: 20px; /* Espaciado para el contenido */
+        background-color: #fff7f0; /* Fondo claro */
+    }
+    
+    .product-item {
+        display: flex;
+        flex-wrap: wrap; /* Asegura que los elementos se ajusten en pantallas pequeñas */
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        background-color: #fff7f0;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100% !important;
+    }
+
+    .alt-bg {
+        background-color: #e7c8a3;
+    }
+    
+    .product-text {
+        flex: 1;
+        padding: 1rem;
+    }
+    
+    .product-image {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .product-image img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    h2 {
+        font-family: 'Georgia', serif;
+        font-size: 1.8em;
+        color: #365034;
+        text-align: center;
+    }
+    
+    p {
+        font-family: 'Georgia', serif;
+        font-size: 1.2em;
+        color: #444;
+        line-height: 1.6;
+        text-align: center;
+    }
+    .product-image img {
+        width: 100%; /* Imagen ocupa todo el ancho del contenedor */
+        max-width: 350px; /* Máximo ancho */
+        height: 400px; /* Altura fija para uniformidad */
+        object-fit: cover; /* Recorta proporcionalmente */
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para estilo */
+    }
+    
+
+/* Sección de productos */
+.row {
+    margin-bottom: 2.5rem;
+    gap: 1.9rem;
+}
+
+
+@media (max-width: 991px) {
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .navbar-buttons {
+        flex-direction: column; /* Apila los botones verticalmente */
+        align-items: center; /* Centra los botones horizontalmente */
+        gap: 10px; /* Espaciado entre botones */
+        width: 100%; /* Ocupa el ancho completo */
+    }
+    .navbar-buttons .btn {
+        width: auto; /* Asegura que el ancho se adapte al contenido */
+    }
+    .logo-custom {
+        display: block; /* Asegúrate de que la imagen sea tratada como bloque */
+        margin: 0 auto; /* Centro automático */
+    }
+    .text-brown {
+        display: none  !important;
+    }
+  
+}
+
+
+
+/* Estilos personalizados */
+body{
+    background-color: #fff7f0; /* Fondo general */ 
+    font-family: 'Georgia', serif;
+}
+
+h2 {
+    color: #365034;
+    font-family: 'Georgia', serif;
+}
+
+
+.navbar {
+    background-color: #392217 !important;
+}
+
+.navbar-dark .nav-link {
+    color: #f7d3a7 !important;
+}
+
+.navbar-dark .nav-link:hover {
+    background-color: #f7d3a7;
+    color: #392217 !important;
+}
+/* Imagen sticky */
+.left-image {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* FOOTER */
+/* Estilo general del footer */
+.footer {
+    background-color: #4d2c20; /* Café oscuro */
+    color: #f8e8d4; /* Crema */
+    padding: 2rem 1rem;
+    font-family: 'Georgia', serif;
+}
+
+/* Contenedor principal del contenido del footer */
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Separa las secciones hacia los extremos */
+    align-items: flex-start; /* Alinea verticalmente las secciones al inicio */
+    gap: 2rem; /* Espacio entre las secciones */
+    flex-wrap: wrap; /* Asegura que sea responsivo */
+}
+
+/* Estilo para cada sección del footer */
+.footer-section {
+    flex: 1; /* Hace que ambas secciones ocupen el mismo espacio */
+    max-width: 50%; /* Máximo ancho para evitar expansión */
+    text-align: center; /* Centra el contenido internamente */
+}
+
+.footer-section h3 {
+    font-size: 1.3rem;
+    color: #f8e8d4;
+    margin-bottom: 1rem;
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #f8e8d4;
+}
+
+.footer-link {
+    color: #ffbe7b; /* Color del enlace */
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+}
+
+.footer-link:hover {
+    color: #ffa64c; /* Color del enlace al pasar el cursor */
+}
+
+/* Formulario de Newsletter */
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.newsletter-form input[type="email"] {
+    padding: 0.5rem;
+    border: 1px solid #ffbe7b;
+    border-radius: 5px;
+    flex: 1;
+    max-width: 300px;
+    background-color: #f8e8d4;
+    color: #4d2c20;
+}
+
+.newsletter-form button {
+    background-color: #ffbe7b;
+    color: #4d2c20;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background-color: #ffa64c;
+}
+
+/* Línea inferior */
+.footer-bottom {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 2rem;
+}
+
+.footer-bottom p {
+    color: #ffbe7b;
+}
+
+.footer-divider {
+    border: 0;
+    height: 1px;
+    background: #ffbe7b;
+    margin: 1rem 0;
+}
