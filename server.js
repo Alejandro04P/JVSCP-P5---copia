@@ -26,6 +26,10 @@ app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
+const used = process.memoryUsage();
+for (let key in used) {
+  console.log(`${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`);
+}
 
 // Inicializar la base de datos SQLite
 /*const db = new sqlite3.Database('./usuarios.db', (err) => {
