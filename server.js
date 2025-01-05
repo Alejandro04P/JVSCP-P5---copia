@@ -16,8 +16,12 @@ app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
 //app.listen(3000, '127.0.0.1', () => {
 //    console.log('Servidor escuchando en http://127.0.0.1:3000');
 //});
-const PORT = process.env.PORT || 3000; // Usa el puerto que Railway proporciona o 3000 como predeterminado
+/*const PORT = process.env.PORT || 3000; // Usa el puerto que Railway proporciona o 3000 como predeterminado
 app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});*/
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
