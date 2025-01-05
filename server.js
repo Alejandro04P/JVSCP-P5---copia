@@ -489,7 +489,7 @@ app.get('/facturas', async (req, res) => {
 app.get('/usuarios', async (req, res) => {
     try {
         const usuarios = await dbA.query(
-            'SELECT id_usuario, nombre_usuario FROM usuarios',
+            'SELECT id_usuario, username FROM usuarios',
             { type: QueryTypes.SELECT }
         );
         res.json(usuarios);
@@ -501,7 +501,7 @@ app.get('/usuarios', async (req, res) => {
 app.get('/productos', async (req, res) => {
     try {
         const productos = await dbA.query(
-            'SELECT id_producto, nombre_producto FROM productos',
+            'SELECT id_producto, pro_descripcin FROM productos',
             { type: QueryTypes.SELECT }
         );
         res.json(productos);
