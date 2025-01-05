@@ -21,9 +21,11 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });*/
 
-app.listen(process.env.API_HOST_URL, () => {
-    console.log(`servidor levantado ${process.env.API_HOST_URL}`);
+const PORT = process.env.PORT || 3000; // Usa el puerto asignado por Railway o 3000 como fallback.
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
 
 // Inicializar la base de datos SQLite
 /*const db = new sqlite3.Database('./usuarios.db', (err) => {
