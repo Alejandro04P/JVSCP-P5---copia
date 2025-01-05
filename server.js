@@ -473,33 +473,48 @@ app.post('/validarUsuario', async (req, res) => {
     }
 });
 // Ruta para obtener usuarios
-app.get('/usuarios', (req, res) => {
-    const query = 'SELECT id_usuario, nombre_usuario FROM usuarios';
-    db.query(query, (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+app.get('/facturas', async (req, res) => {
+    try {
+        const facturas = await dbA.query(
+            'SELECT id_factura FROM facturas',
+            { type: QueryTypes.SELECT }
+        );
+        res.json(facturas);
+    } catch (error) {
+        console.error('Error al obtener facturas:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener facturas' });
+    }
 });
 
-// Ruta para obtener productos
-app.get('/productos', (req, res) => {
-    const query = 'SELECT id_producto, nombre_producto FROM productos';
-    db.query(query, (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+app.get('/usuarios', async (req, res) => {
+    try {
+        const usuarios = await dbA.query(
+            'SELECT id_usuario, nombre_usuario FROM usuarios',
+            { type: QueryTypes.SELECT }
+        );
+        res.json(usuarios);
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener usuarios' });
+    }
+});
+app.get('/productos', async (req, res) => {
+    try {
+        const productos = await dbA.query(
+            'SELECT id_producto, nombre_producto FROM productos',
+            { type: QueryTypes.SELECT }
+        );
+        res.json(productos);
+    } catch (error) {
+        console.error('Error al obtener productos:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener productos' });
+    }
 });
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 // Ruta para obtener ID de facturas
-app.get('/facturas', (req, res) => {
-    const query = 'SELECT id_factura FROM facturas';
-    db.query(query, (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
-});
+
 
 // Inicializar el servidor
 
