@@ -20,14 +20,10 @@ app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });*/
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
 
-/* app.listen(process.env.API_HOST_URL, () => {
+app.listen(process.env.API_HOST_URL, () => {
     console.log(`servidor levantado ${process.env.API_HOST_URL}`);
-});*/
+});
 
 // Inicializar la base de datos SQLite
 /*const db = new sqlite3.Database('./usuarios.db', (err) => {
