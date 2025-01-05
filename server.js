@@ -13,10 +13,13 @@ app.use(cors());
 // Habilitar CORS
 app.use(express.static('public')); // Servir archivos estáticos 
 app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
-app.listen(process.env.API_HOST_URL, () => {
-    console.log(`servidor levantado ${process.env.API_HOST_URL}`);
+app.listen(3000, '127.0.0.1', () => {
+    console.log('Servidor escuchando en http://127.0.0.1:3000');
 });
 
+/* app.listen(process.env.API_HOST_URL, () => {
+    console.log(`servidor levantado ${process.env.API_HOST_URL}`);
+});*/
 
 // Inicializar la base de datos SQLite
 /*const db = new sqlite3.Database('./usuarios.db', (err) => {
@@ -105,8 +108,8 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/carro', async (req, res) => {
-    const { username, nombre_producto, cantidad, valor_unitario } = req.body;
-
+    const { username, nombre_producto, cantidad, valor_unitario,relleno,image} = req.body;
+    console.log('Datos recibidos:', { username,nombre_producto, cantidad, valor_unitario,relleno,image});
     try {
         // Verificar que la conexión a la base de datos esté activa
         await verifyConection();
@@ -128,10 +131,10 @@ app.post('/carro', async (req, res) => {
 
         // Buscar el id_producto
         const producto = await dbA.query(
-            'SELECT id_producto FROM productos WHERE pro_descripcion = :nombre_producto',
+            'SELECT id_producto FROM productos WHERE pro_descripcion = :nombre_producto AND pro_relleno = :relleno',
             {
                 type: QueryTypes.SELECT,
-                replacements: { nombre_producto }
+                replacements: { nombre_producto,relleno}
             }
         );
 
@@ -171,15 +174,16 @@ app.post('/carro', async (req, res) => {
             // Si el producto no existe, insertarlo
             await dbA.query(
                 `INSERT INTO carrito 
-                (id_usuario, id_producto, cantidad, valor_unitario, estado_carrito, fecha_agregado)
-                VALUES (:id_usuario, :id_producto, :cantidad, :valor_unitario, 'ACT', NOW())`,
+                (id_usuario, id_producto, cantidad, valor_unitario, estado_carrito, fecha_agregado,imagen)
+                VALUES (:id_usuario, :id_producto, :cantidad, :valor_unitario, 'ACT', NOW(),:image)`,
                 {
                     type: QueryTypes.INSERT,
                     replacements: {
                         id_usuario,
                         id_producto,
                         cantidad,
-                        valor_unitario
+                        valor_unitario,
+                        image
                     }
                 }
             );
@@ -191,11 +195,8 @@ app.post('/carro', async (req, res) => {
     }
 });
 
-
-
 app.post('/carroup', async (req, res) => {
-    const { username, cantidad } = req.body;
-
+    const { username, cantidad ,nombre_producto,relleno} = req.body;
     try {
         // Verificar que la conexión a la base de datos esté activa
         await verifyConection();
@@ -215,13 +216,29 @@ app.post('/carroup', async (req, res) => {
 
         const id_usuario = usuario[0].id_usuario;
 
+        
+        // Buscar el id_producto
+        const producto = await dbA.query(
+            'SELECT id_producto FROM productos WHERE pro_descripcion = :nombre_producto AND pro_relleno = :relleno',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { nombre_producto,relleno}
+            }
+        );
+
+        if (!producto.length) {
+            return res.status(404).json({ success: false, message: 'Producto no encontrado' });
+        }
+
+        const id_productos = producto[0].id_producto;
+
         // Verificar si el producto ya existe en el carrito del usuario
         const carritoItem = await dbA.query(
             `SELECT * FROM carrito 
-            WHERE id_usuario = :id_usuario AND id_producto = :id_producto`,
+            WHERE id_usuario = :id_usuario AND id_producto = :id_productos`,
             {
                 type: QueryTypes.SELECT,
-                replacements: { id_usuario, id_producto }
+                replacements: { id_usuario,id_productos}
             }
         );
 
@@ -232,22 +249,217 @@ app.post('/carroup', async (req, res) => {
         // Actualizar la cantidad del producto en el carrito
         await dbA.query(
             `UPDATE carrito 
-            SET cantidad = cantidad + :cantidad, fecha_agregado = NOW()
-            WHERE id_usuario = :id_usuario AND id_producto = :id_producto`,
+            SET cantidad = :cantidad, fecha_agregado = NOW()
+            WHERE id_usuario = :id_usuario  AND id_producto = :id_productos`,
             {
                 type: QueryTypes.UPDATE,
                 replacements: {
                     id_usuario,
-                    id_producto,
-                    cantidad
+                    cantidad, id_productos
                 }
             }
         );
-
         res.status(200).json({ success: true, message: 'Cantidad actualizada en el carrito' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Error al actualizar el carrito' });
+    }
+});
+
+app.get('/carrose', async (req, res) => {
+    const { user } = req.query; // Usar req.query para solicitudes GET
+    console.log('Datos recibidos:', { user });
+    
+    try {
+        // Verificar la conexión
+        await verifyConection();
+
+        // Buscar el usuario en la base de datos
+        const usuario = await dbA.query(
+            'SELECT id_usuario FROM usuarios WHERE username = :user',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { user }
+            }
+        );
+
+        if (!usuario.length) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const id_usuario = usuario[0].id_usuario;
+
+        // Consulta con JOIN
+        const carrito = await dbA.query(
+            `SELECT 
+                carrito.id_carrito,
+                carrito.id_usuario,
+                carrito.id_producto,
+                carrito.cantidad,
+                carrito.valor_unitario,
+                carrito.estado_carrito,
+                productos.pro_descripcion,
+                productos.pro_precio_venta,
+                productos.pro_relleno,
+                carrito.imagen
+             FROM 
+                carrito
+             JOIN 
+                productos 
+             ON 
+                carrito.id_producto = productos.id_producto
+             WHERE 
+                carrito.id_usuario = :id_usuario`,
+            {
+                type: QueryTypes.SELECT,
+                replacements: { id_usuario },
+            }
+        );
+        res.status(200).json({ success: true, carrito }); // Devuelve carrito con éxito
+    } catch (error) {
+        console.error('Error al obtener el carrito:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor', carrito: [] });
+    }
+});
+
+
+app.delete('/carrorem', async (req, res) => {
+    const { username, nombre_producto, relleno } = req.body;
+    console.log('Datos recibidos:', { username ,nombre_producto, relleno });
+    try {
+        // Verificar la conexión a la base de datos
+        await verifyConection();
+
+        // Buscar el ID del usuario
+        const usuario = await dbA.query(
+            'SELECT id_usuario FROM usuarios WHERE username = :username',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { username },
+            }
+        );
+
+        if (!usuario.length) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const id_usuario = usuario[0].id_usuario;
+
+        // Buscar el ID del producto con relleno
+        const producto = await dbA.query(
+            'SELECT id_producto FROM productos WHERE pro_descripcion = :nombre_producto AND pro_relleno = :relleno',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { nombre_producto, relleno },
+            }
+        );
+
+        if (!producto.length) {
+            return res
+                .status(404)
+                .json({ success: false, message: 'Producto no encontrado en la base de datos' });
+        }
+
+        const id_producto = producto[0].id_producto;
+
+        // Eliminar el producto del carrito
+        const deleted = await dbA.query(
+            'DELETE FROM carrito WHERE id_usuario = :id_usuario AND id_producto = :id_producto',
+            {
+                type: QueryTypes.DELETE,
+                replacements: { id_usuario, id_producto },
+            }
+        );
+
+        if (deleted) {
+            res.status(200).json({ success: true, message: 'Producto eliminado del carrito' });
+        } else {
+            res.status(400).json({ success: false, message: 'No se pudo eliminar el producto' });
+        }
+    } catch (error) {
+        console.error('Error al eliminar el producto del carrito:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+
+app.post('/factura', async (req, res) => {
+    const { username, cart } = req.body; // Asegúrate de que el cliente envíe el carrito
+
+    try {
+        // Verificar conexión
+        await verifyConection();
+
+        // Buscar el id_usuario según el username
+        const usuario = await dbA.query(
+            'SELECT id_usuario FROM usuarios WHERE username = :username',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { username },
+            }
+        );
+
+        if (!usuario.length) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const id_usuario = usuario[0].id_usuario;
+
+        // Obtener el último ID de factura y generar uno nuevo
+        const lastFactura = await dbA.query(
+            'SELECT id_factura FROM facturas ORDER BY id_factura DESC LIMIT 1',
+            { type: QueryTypes.SELECT }
+        );
+
+        let newIdFactura;
+        if (lastFactura.length > 0) {
+            // Incrementar el último ID de factura
+            const lastId = lastFactura[0].id_factura.trim(); // Ejemplo: 'FAC0001'
+            const numericPart = parseInt(lastId.slice(3)) + 1; // Incrementar la parte numérica
+            newIdFactura = `FAC${numericPart.toString().padStart(4, '0')}`; // Formatear con ceros a la izquierda
+        } else {
+            // Si no hay facturas, usar un ID inicial
+            newIdFactura = 'FAC0001';
+        }
+
+        // Calcular los totales de la factura
+        const subtotal = cart.reduce((sum, product) => sum + product.valor_unitario * product.quantity, 0);
+        const iva = subtotal * 0.12; // Asume un 12% de IVA
+        const total = subtotal + iva;
+
+        // Insertar la factura con el nuevo ID generado
+        await dbA.query(
+            `INSERT INTO facturas (id_factura, id_usuario, fac_descripcion, fac_fechahora, fac_subtotal, fac_iva, fac_total, estado_fac)
+             VALUES (:id_factura, :id_usuario, 'Compra realizada', NOW(), :subtotal, :iva, :total, 'ACT')`,
+            {
+                type: QueryTypes.INSERT,
+                replacements: { id_factura: newIdFactura, id_usuario, subtotal, iva, total },
+            }
+        );
+
+        res.status(200).json({ success: true, message: 'Factura y detalles insertados con éxito' });
+    } catch (error) {
+        console.error('Stock insuficiente:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+});
+app.post('/validarUsuario', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+    
+        // Verificar conexión a la base de datos
+        await verifyConection();
+
+        // Si el usuario es admin, devolver false directamente
+        if (username.toLowerCase() != 'admin') {
+            console.log(username);
+            return res.status(200).json({ success: false, message: 'Acceso correcto' });
+        }else{
+            return res.status(200).json({ success: true, message: 'Usuario válido' });
+        } 
+    } catch (error) {
+        console.error('Error al validar usuario:', error);
+        res.status(500).json({ success: false, message: 'Error en el servidor' });
     }
 });
 

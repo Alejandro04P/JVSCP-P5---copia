@@ -23,20 +23,20 @@ function displayCart() {
         <div class="cart-item d-flex justify-content-between align-items-center mb-3">
             <div class="product-card">
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.title}" class="img-thumbnail" />
+                    <img src="${product.image}" alt="${product.nombre_producto}" class="img-thumbnail" />
                 </div>
                 <div class="product-details">
-                    <h3 class="product-title">${product.title}</h3>
-                    <p class="product-flavor">Relleno: ${product.flavor}</p>
+                    <h3 class="product-title">${product.nombre_producto}</h3>
+                    <p class="product-flavor">Relleno: ${product.relleno}</p>
                     <div class="quantity-selector">
-                        <button class="quantity-btn" onclick="decreaseQuantity('${product.title}', '${product.flavor}'); carritoUpdate(this);">-</button>
+                        <button class="quantity-btn" onclick="decreaseQuantity('${product.nombre_producto}', '${product.relleno}', this)">-</button>
                         <input type="number" class="quantity" value="${product.quantity}" min="1" readonly />
-                        <button class="quantity-btn" onclick="increaseQuantity('${product.title}', '${product.flavor}'); carritoUpdate(this);">+</button>
+                        <button class="quantity-btn" onclick="increaseQuantity('${product.nombre_producto}', '${product.relleno}', this)">+</button>
                     </div>
-                    <p class="product-price text-muted">Precio: $${product.price}</p>
+                    <p class="product-price text-muted">Precio: $${product.valor_unitario.toFixed(2)}</p>
                 </div>
             </div>
-            <button class="btn btn-danger btn-sm add-to-cart" onclick="removeFromCart('${product.title}', '${product.flavor}')">Eliminar</button>
+            <button class="btn btn-danger btn-sm add-to-cart" onclick="carritoRemove(this);removeFromCart('${product.nombre_producto}', '${product.relleno}');">Eliminar</button>
         </div>
     `
     )
@@ -44,7 +44,7 @@ function displayCart() {
 
     // Calcular el precio total
     var totalPrice = cart.reduce((total, product) => {
-        const price = parseFloat(product.price.replace('$', ''));
+        const price = product.valor_unitario;
         return total + price * product.quantity;
     }, 0);
     
@@ -53,7 +53,6 @@ function displayCart() {
     totalIvPriceElement.textContent = `$${totalPrice.toFixed(2)}`; // Actualizar el total con 2 decimales
 
 }
-
 // Función para actualizar el número de productos en el carrito
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -69,7 +68,7 @@ function removeFromCart(title, flavor) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Filtrar los productos que no coincidan con el producto a eliminar
-    cart = cart.filter((product) => product.title !== title || product.flavor !== flavor);
+    cart = cart.filter((product) => product.nombre_producto !== title || product.relleno !== flavor);
 
     // Guardar carrito actualizado en localStorage
     if (cart.length === 0) {
@@ -80,16 +79,73 @@ function removeFromCart(title, flavor) {
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-
     // Actualizar la vista y el contador del carrito
     displayCart();
     updateCartCount();
 }
 
-// Llamar a las funciones necesarias al cargar la página del carrito
+// Función que inicializa los datos del carrito
+function initializeCartPage() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const usuario = localStorage.getItem('username');
+    if (window.location.pathname.includes('carrito.html')) { // Detecta si estás en carrito.html    
+        if(usuario != null && cart.length !=0){     
+            carritoSelect();
+            displayCart();
+            updateCartCount();
+        }
+    }else if (window.location.pathname.includes('index.html')) {
+        if(usuario != null){     
+            carritoSelect();
+        }
+    }
+}
+
+// Detecta la carga inicial
 document.addEventListener('DOMContentLoaded', () => {
-    displayCart();
-    updateCartCount();
+    initializeCartPage();
 });
 
+
+// Detecta cambios en la URL para Single Page Applications (SPA)
+window.addEventListener('popstate', () => {
+    initializeCartPage();
+});
+function carritoSelect() {
+    const user = localStorage.getItem('username'); // Obtener el username almacenado
+    fetch(`http://127.0.0.1:3000/carrose?user=${encodeURIComponent(user)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+               // Supongamos que `data.carrito` contiene tu JSON
+                const carrito = data.carrito || []; // Asegúrate de que exista data.carrito para evitar errores
+                // Mapeo del JSON al formato de `product`
+                const cart = carrito.map((item) => {
+                    return {
+                        nombre_producto: item.pro_descripcion.trim(), // Nombre del producto
+                        valor_unitario: parseFloat(item.valor_unitario), // Precio unitario como número
+                        quantity: parseInt(item.cantidad, 10), // Cantidad
+                        relleno: item.pro_relleno.trim(), // Relleno sin espacios adicionales
+                        image: item.imagen.trim() // URL de la imagen
+                    };
+                });
+                // Sobrescribir el carrito en el localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                console.log('Carrito guardado en localStorage:', data.carrito);
+                // Cargar el carrito dinámicamente en la página
+        
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Ocurrió un error al cargar el carrito');
+        });
+}
 

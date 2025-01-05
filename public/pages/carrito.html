@@ -59,7 +59,7 @@
             <!-- Encabezado del carrito -->
             <div>
                 <h2 class="cart-title">Cesta</h2>
-                <p class="cart-subtitle"><span id="cart-count">9</span> productos en la cesta</p>
+                <p class="cart-subtitle"><span id="cart-count">0</span> productos en la cesta</p>
             </div>
     
             <!-- Contenedor flex para productos y total -->
@@ -74,7 +74,7 @@
                     <h3>Subtotal: <span class="total-price">$0</span></h3>
                     <h3>IVA: <span class="total-price">15%</span></h3>
                     <h3>Total: <span class="total-ivprice">$0</span></h3>
-                    <button class="checkout-button">Pagar</button>
+                    <button class="checkout-button"> <a href="../pages/factura.html">Pagar</a></button>
                     <div class="promotion-section">
                         <h4>Promociones</h4>
                         <input type="text" placeholder="Introducir el cupón">
@@ -121,40 +121,49 @@
     </footer>
      
     <script>
-        function decreaseQuantity(title, flavor) {
+        function decreaseQuantity(title, flavor,button) {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             const product = cart.find(
-                (item) => item.title === title && item.flavor === flavor
+                (item) => item.nombre_producto === title && item.relleno === flavor
             );
 
             if (product && product.quantity > 1) {
                 product.quantity -= 1;
+                const productCard = button.closest('.cart-item');
+                const quantityInput = productCard.querySelector('.quantity');
+                quantityInput.value = product.quantity;
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
             displayCart(); // Actualiza la vista del carrito
             updateCartCount(); // Actualiza el contador del carrito
+            carritoUpdate(button);
         }
 
-         function increaseQuantity(title, flavor) {
+         function increaseQuantity(title, flavor,button) {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             const product = cart.find(
-                (item) => item.title === title && item.flavor === flavor
+                (item) => item.nombre_producto === title && item.relleno === flavor
             );
 
             if (product) {
                 product.quantity += 1;
+                const productCard = button.closest('.cart-item');
+                const quantityInput = productCard.querySelector('.quantity');
+                quantityInput.value = product.quantity;
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
             displayCart(); // Actualiza la vista del carrito
             updateCartCount(); // Actualiza el contador del carrito
+            carritoUpdate(button);
         }
     </script>
- 
+    
     <script src="../JS/iniciarsecion.js"></script>
     <script src="../public/carritofn.js"></script>
+  
 </body>
 </html>

@@ -1061,3 +1061,245 @@ video {
         width: 100%; /* Ocupa todo el ancho disponible para facilitar el control */
     }
 }
+
+/*TARJETAS*/
+.payment-container {
+    justify-content: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    width: 80%;
+}
+.payment-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-group input:focus {
+    border-color: #7b83eb;
+    outline: none;
+}
+.card-icons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.card-icons img {
+    width: 40px;
+    height: auto;
+}
+.btn-primary {
+    background: #7b83eb;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+.btn-primary:hover {
+    background: #6f75e4;
+}
+.terms {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    color: #555;
+}
+.terms a {
+    color: #7b83eb;
+    text-decoration: none;
+}
+.terms a:hover {
+    text-decoration: underline;
+}
+.payment-struct{
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+/*CRUD*/
+header#crud-header {
+    background-color: #5d4037;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+h1.crud-title {
+    margin: 0;
+}
+
+main#crud-main {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+    background-color: #f9f9f9;
+}
+
+#crud-container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    gap: 2em;
+}
+
+/* Opciones CRUD */
+aside#crud-options {
+    flex: 1;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+aside#crud-options h2 {
+    color: #5d4037;
+    margin-top: 0;
+}
+
+aside#crud-options ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside#crud-options ul li {
+    margin-bottom: 1em;
+}
+
+aside#crud-options button.crud-option {
+    width: 100%;
+    padding: 0.7em;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #5d4037;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+aside#crud-options button.crud-option:hover {
+    background-color: #3e2723;
+}
+
+/* Contenido Dinámico */
+section#crud-content {
+    flex: 3;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+section#crud-content h2 {
+    color: #5d4037;
+    margin-top: 0;
+}
+
+/* Selector de Tabla */
+.crud-combobox-container {
+    margin-bottom: 1.5em;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+select.crud-combobox {
+    width: 100%;
+    padding: 0.5em;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+}
+
+/* Formulario dinámico */
+.crud-form-container {
+    margin-top: 1em;
+}
+
+.crud-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.crud-input {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.crud-button {
+    background-color: #5d4037;
+    color: white;
+    padding: 0.7em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.crud-button:hover {
+    background-color: #3e2723;
+}
+
+.crud-resultados {
+    background: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.crud-resultados h3 {
+    margin-top: 0;
+    color: #5d4037;
+}
+
+table.crud-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+table.crud-table th, table.crud-table td {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+}
+
+table.crud-table th {
+    background-color: #5d4037;
+    color: white;
+}

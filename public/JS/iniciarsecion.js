@@ -29,6 +29,7 @@ function updateNavbar(isLoggedIn, username) {
             localStorage.removeItem('username');  // Eliminar el nombre de usuario
             updateNavbar(false, '');  // Volver a mostrar los botones de login/registro
             localStorage.removeItem('cart');// miraaaaaaaaaaa
+            window.location.href = 'http://127.0.0.1:3000/index.html';   
         });
 
     } else {

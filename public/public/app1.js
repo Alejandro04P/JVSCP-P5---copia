@@ -34,19 +34,35 @@ form.addEventListener('submit', function(event) {
            // }, 500); // Espera 500ms antes de redirigir     
                 // Limpiar sessionStorage después del envío
             sessionStorage.removeItem("formData");
-            form.reset(); // Limpia el formulario
-            
+            form.reset(); // Limpia el formulario    
         } else {
-            const username = form.elements['username'].value;
-            localStorage.setItem('loggedIn', 'true');
-            localStorage.setItem('username', username);
-                 // Limpiar sessionStorage después del envío  
-
-            carritoSelect();
-            window.location.href = 'http://127.0.0.1:3000/index.html';
-
+           
+            const username1 = form.username.value.trim();
+            const password = form.password.value.trim();
             
-          
+            // Llamar a validarData para verificar los datos
+            validarData(username1, password).then((esValido) => {
+                if (esValido) {
+                    localStorage.removeItem("cart");
+                    const username = form.elements['username'].value;
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    form.reset(); // Limpia el formulario
+                    window.location.href = 'http://127.0.0.1:3000/pages/adminfac.html';
+                } else {
+                    localStorage.removeItem("cart");
+                    const username = form.elements['username'].value;
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    form.reset(); // Limpia el formulario
+                    window.location.href = 'http://127.0.0.1:3000/index.html';
+                }
+            })
+            .catch((error) => {
+                // Manejar cualquier error que ocurra en la validación
+                console.error("Error al validar datos:", error);
+                alert("Ocurrió un error al validar los datos.");
+            });
         }
     } else {
         alert('El registro o inicio de sesión falló. ' + (data.message || 'Error desconocido.'));
@@ -54,3 +70,23 @@ form.addEventListener('submit', function(event) {
 })
 });
 
+function validarData(username, password) {
+    const url = 'http://127.0.0.1:3000/validarUsuario';
+
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }) // Datos enviados al servidor
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Validación de usuario:', data);
+            return data.success; // Devuelve true o false según la respuesta del servidor
+        })
+        .catch((error) => {
+            console.error('Error al validar datos:', error);
+            return false; // En caso de error, devuelve false
+        });
+}
