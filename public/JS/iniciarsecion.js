@@ -34,9 +34,9 @@ function updateNavbar(isLoggedIn, username) {
 
     } else {
         loginBtn.textContent = 'Iniciar Sesión';  // Volver a mostrar 'Iniciar sesión'
-        loginBtn.setAttribute('href', '../public/iniciar.html');  // Redirige a la página de login
+        loginBtn.setAttribute('href', '../dataserv/iniciar.html');  // Redirige a la página de login
 
         registerClone.textContent = 'Crear Cuenta';  // Volver a mostrar 'Crear cuenta'
-        registerClone.setAttribute('href', '../public/registro.html');  // Redirige a la página de registro
+        registerClone.setAttribute('href', '../dataserv/registro.html');  // Redirige a la página de registro
     }
 }
