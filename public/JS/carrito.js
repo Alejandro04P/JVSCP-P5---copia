@@ -89,7 +89,7 @@ function initializeCartPage() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const usuario = localStorage.getItem('username');
     if (window.location.pathname.includes('carrito.html')) { // Detecta si estás en carrito.html    
-        if(usuario != null && cart.length !=0){     
+        if(usuario != null){     
             carritoSelect();
             displayCart();
             updateCartCount();
