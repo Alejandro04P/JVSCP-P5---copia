@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <form>
                     <h3>Consultar Registros del Carrito</h3>
                     <label for="filtroUsuario">Usuario:</label>
-                    <select id="filtroUsuario" class="crud-input">
+                    <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroProducto">Producto:</label>
-                    <select id="filtroProducto" class="crud-input">
+                    <select id="producto" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <button type="button" class="crud-button">Consultar</button>
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <form>
                     <h3>Consultar Facturas</h3>
                     <label for="filtroUsuario">Usuario:</label>
-                    <select id="filtroUsuario" class="crud-input">
+                    <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroFecha">Fecha:</label>
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <form>
                     <h3>Insertar Detalle de Factura</h3>
                     <label for="idFactura">ID del Usuario:</label>
-                    <select id="idUsuario" class="crud-input">
+                    <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con usuarios de la base de datos -->
                     </select>
                     <label for="producto">Producto:</label>
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <!-- Opciones dinámicas cargadas con IDs de facturas -->
                     </select>
                     <label for="productoFiltro">Producto:</label>
-                    <select id="productoFiltro" class="crud-input">
+                    <select id="producto"" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <button type="button" class="crud-button">Consultar</button>
