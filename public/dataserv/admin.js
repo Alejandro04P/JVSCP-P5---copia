@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const options = document.querySelectorAll('.crud-option');
     const contentTitle = document.getElementById('crud-content-title');
     const formContainer = document.getElementById('form-container');
-    const tableSelector = document.getElementById('table-select');
 
     const forms = {
         carrito: {
@@ -111,8 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
             insert: `
                 <form>
                     <h3>Insertar Detalle de Factura</h3>
-                    <label for="idFactura">ID de la Factura:</label>
-                    <input type="text" id="idFactura" class="crud-input">
+                    <label for="idFactura">ID del Usuario:</label>
+                    <select id="idUsuario" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con usuarios de la base de datos -->
+                    </select>
                     <label for="producto">Producto:</label>
                     <select id="producto" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
@@ -150,7 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <form>
                     <h3>Consultar Detalles de Factura</h3>
                     <label for="idFacturaFiltro">ID de la Factura:</label>
-                    <input type="text" id="idFacturaFiltro" class="crud-input">
+                    <select id="idFacturaFiltro" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con IDs de facturas -->
+                    </select>
+                    <label for="productoFiltro">Producto:</label>
+                    <select id="productoFiltro" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de productos -->
+                    </select>
                     <button type="button" class="crud-button">Consultar</button>
                 </form>
             `,
@@ -160,26 +167,24 @@ document.addEventListener('DOMContentLoaded', () => {
     options.forEach(option => {
         option.addEventListener('click', () => {
             const action = option.dataset.action;
-            const selectedTable = tableSelector.value;
+            const selectedTable = "detalleFactura";
             contentTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} Registro en ${selectedTable}`;
             formContainer.innerHTML = forms[selectedTable][action];
 
             if (action === 'insert' || action === 'select') {
-                if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
-                    loadUsuarios('#usuario');
-                    loadProductos('#producto');
-                } else if (selectedTable === 'factura') {
-                    loadUsuarios('#usuario');
+                if (selectedTable === 'detalleFactura') {
+                    loadFacturas('#idFacturaFiltro');
+                    loadProductos('#productoFiltro');
                 }
             }
         });
     });
 
-    function loadUsuarios(selector) {
-        const usuarios = ["Juan Pérez", "Ana Gómez", "Luis Torres"]; // Simulación
+    function loadFacturas(selector) {
+        const facturas = ["F001", "F002", "F003"]; // Simulación
         const select = document.querySelector(selector);
         if (select) {
-            select.innerHTML = usuarios.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('');
+            select.innerHTML = facturas.map(factura => `<option value="${factura}">${factura}</option>`).join('');
         }
     }
 
