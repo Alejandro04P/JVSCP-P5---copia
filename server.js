@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const app = express();
-const PORT = 3000;
+//const PORT = 3000;
 const { QueryTypes, Sequelize } = require('sequelize');
 const { verifyConection, sequelize: dbA,  } = require('./conexion')
 
@@ -13,8 +13,12 @@ app.use(cors());
 // Habilitar CORS
 app.use(express.static('public')); // Servir archivos estáticos 
 app.use(bodyParser.json());  // Parsear JSON en el cuerpo de la solicitud
-app.listen(3000, '127.0.0.1', () => {
-    console.log('Servidor escuchando en http://127.0.0.1:3000');
+//app.listen(3000, '127.0.0.1', () => {
+//    console.log('Servidor escuchando en http://127.0.0.1:3000');
+//});
+const PORT = process.env.PORT || 3000; // Usa el puerto que Railway proporciona o 3000 como predeterminado
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
 /* app.listen(process.env.API_HOST_URL, () => {
