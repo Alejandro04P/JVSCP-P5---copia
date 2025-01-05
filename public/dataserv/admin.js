@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.nombre_usuario}</option>`).join('');
+                    select.innerHTML = data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar usuarios:', error));
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = data.map(producto => `<option value="${producto.id_producto}">${producto.nombre_producto}</option>`).join('');
+                    select.innerHTML = data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar productos:', error));
