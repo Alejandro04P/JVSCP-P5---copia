@@ -201,7 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
+                    select.innerHTML = data.map(producto => 
+                        `<option value="${producto.id_producto}">${producto.pro_descripcion}-(${producto.pro_relleno})</option>`
+                    ).join('');
                 }
             })
             .catch(error => console.error('Error al cargar productos:', error));

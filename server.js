@@ -501,7 +501,7 @@ app.get('/usuarios', async (req, res) => {
 app.get('/productos', async (req, res) => {
     try {
         const productos = await dbA.query(
-            'SELECT id_producto, pro_descripcion FROM productos',
+            'SELECT id_producto, pro_descripcion, pro_relleno FROM productos',
             { type: QueryTypes.SELECT }
         );
         res.json(productos);
