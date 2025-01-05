@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="cantidad" class="crud-input" min="1">
                     <label for="estado">Estado:</label>
                     <input type="text" id="estado" class="crud-input">
-                    <button type="button" class="crud-button">Guardar</button>
+                    <button type="submit" class="crud-button">Guardar</button>
                 </form>
             `,
             update: `
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" id="idCarrito" class="crud-input">
                     <label for="nuevaCantidad">Nueva Cantidad:</label>
                     <input type="number" id="nuevaCantidad" class="crud-input" min="1">
-                    <button type="button" class="crud-button">Actualizar</button>
+                    <button type="submit" class="crud-button">Actualizar</button>
                 </form>
             `,
             delete: `
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Eliminar Registro del Carrito</h3>
                     <label for="idEliminar">ID del Carrito:</label>
                     <input type="text" id="idEliminar" class="crud-input">
-                    <button type="button" class="crud-button">Eliminar</button>
+                    <button type="submit" class="crud-button">Eliminar</button>
                 </form>
             `,
             select: `
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <select id="producto" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
-                    <button type="button" class="crud-button">Consultar</button>
+                    <button type="submit" class="crud-button">Consultar</button>
                 </form>
             `,
         },
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="iva" class="crud-input" min="0">
                     <label for="total">Total:</label>
                     <input type="number" id="total" class="crud-input" min="0">
-                    <button type="button" class="crud-button">Guardar</button>
+                    <button type="submit" class="crud-button">Guardar</button>
                 </form>
             `,
             update: `
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" id="idFactura" class="crud-input">
                     <label for="descripcion">Nueva Descripción:</label>
                     <input type="text" id="descripcion" class="crud-input">
-                    <button type="button" class="crud-button">Actualizar</button>
+                    <button type="submit" class="crud-button">Actualizar</button>
                 </form>
             `,
             delete: `
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Eliminar Factura</h3>
                     <label for="idFacturaEliminar">ID de la Factura:</label>
                     <input type="text" id="idFacturaEliminar" class="crud-input">
-                    <button type="button" class="crud-button">Eliminar</button>
+                    <button type="submit" class="crud-button">Eliminar</button>
                 </form>
             `,
             select: `
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </select>
                     <label for="filtroFecha">Fecha:</label>
                     <input type="date" id="filtroFecha" class="crud-input">
-                    <button type="button" class="crud-button">Consultar</button>
+                    <button type="submit" class="crud-button">Consultar</button>
                 </form>
             `,
         },
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="cantidad" class="crud-input" min="1">
                     <label for="valor">Valor:</label>
                     <input type="number" id="valor" class="crud-input" min="0">
-                    <button type="button" class="crud-button">Guardar</button>
+                    <button type="submit" class="crud-button">Guardar</button>
                 </form>
             `,
             update: `
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" id="producto" class="crud-input">
                     <label for="nuevaCantidad">Nueva Cantidad:</label>
                     <input type="number" id="nuevaCantidad" class="crud-input" min="1">
-                    <button type="button" class="crud-button">Actualizar</button>
+                    <button type="submit" class="crud-button">Actualizar</button>
                 </form>
             `,
             delete: `
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" id="idFacturaEliminar" class="crud-input">
                     <label for="productoEliminar">Producto:</label>
                     <input type="text" id="productoEliminar" class="crud-input">
-                    <button type="button" class="crud-button">Eliminar</button>
+                    <button type="submit" class="crud-button">Eliminar</button>
                 </form>
             `,
             select: `
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <select id="producto"" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
-                    <button type="button" class="crud-button">Consultar</button>
+                    <button type="submit" class="crud-button">Consultar</button>
                 </form>
             `,
         },
@@ -171,6 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedTable = tableSelector.value;
             contentTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} Registro en ${selectedTable}`;
             formContainer.innerHTML = forms[selectedTable][action];
+            const form = formContainer.querySelector('form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                handleAction(selectedTable, action, new FormData(form));
+            });
+
 
             if (action === 'insert' || action === 'select') {
                 if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
@@ -220,4 +226,40 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar facturas:', error));
     }
+
+    function handleAction(table, action, formData) {
+        let url = `https://nodejs-production-0097.up.railway.app/${table}`;
+        let method = 'POST'; // Default to POST for inserts
+
+        if (action === 'update') {
+            url += `/update`;
+            method = 'PUT';
+        } else if (action === 'delete') {
+            url += `/delete`;
+            method = 'DELETE';
+        } else if (action === 'select') {
+            url += `/select`;
+            method = 'GET';
+        }
+
+        const data = Object.fromEntries(formData.entries());
+
+        fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Resultado:', result);
+                alert(`Acción ${action} realizada con éxito`);
+            })
+            .catch(error => {
+                console.error('Error al realizar la acción:', error);
+                alert('Hubo un error al realizar la acción');
+            });
+    }
+
 });
