@@ -12,7 +12,7 @@ form.addEventListener('submit', function(event) {
    
     // Determina si es un intento de registro o login
     const isLogin = submitButton.textContent === 'Iniciar Sesión';
-    const url = isLogin ? 'http://127.0.0.1:3000/login' : 'http://127.0.0.1:3000/registro';  // Cambia la URL dependiendo de la acción
+    const url = isLogin ? 'https://nodejs-production-0097.up.railway.app' : 'http://127.0.0.1:3000/registro';  // Cambia la URL dependiendo de la acción
     const method = 'POST';
 
     // Realiza el fetch a la URL correspondiente
