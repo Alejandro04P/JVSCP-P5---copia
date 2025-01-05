@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const options = document.querySelectorAll('.crud-option');
     const contentTitle = document.getElementById('crud-content-title');
     const formContainer = document.getElementById('form-container');
+    const tableSelector = document.getElementById('table-select');
 
     const forms = {
         carrito: {
@@ -167,24 +168,26 @@ document.addEventListener('DOMContentLoaded', () => {
     options.forEach(option => {
         option.addEventListener('click', () => {
             const action = option.dataset.action;
-            const selectedTable = "detalleFactura";
+            const selectedTable = tableSelector.value;
             contentTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} Registro en ${selectedTable}`;
             formContainer.innerHTML = forms[selectedTable][action];
 
             if (action === 'insert' || action === 'select') {
-                if (selectedTable === 'detalleFactura') {
-                    loadFacturas('#idFacturaFiltro');
-                    loadProductos('#productoFiltro');
+                if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
+                    loadUsuarios('#usuario');
+                    loadProductos('#producto');
+                } else if (selectedTable === 'factura') {
+                    loadUsuarios('#usuario');
                 }
             }
         });
     });
 
-    function loadFacturas(selector) {
-        const facturas = ["F001", "F002", "F003"]; // Simulación
+    function loadUsuarios(selector) {
+        const usuarios = ["Juan Pérez", "Ana Gómez", "Luis Torres"]; // Simulación
         const select = document.querySelector(selector);
         if (select) {
-            select.innerHTML = facturas.map(factura => `<option value="${factura}">${factura}</option>`).join('');
+            select.innerHTML = usuarios.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('');
         }
     }
 
