@@ -12,9 +12,9 @@ form.addEventListener('submit', function(event) {
    
     // Determina si es un intento de registro o login
     const isLogin = submitButton.textContent === 'Iniciar Sesión';
-    const url = isLogin ? 'https://nodejs-production-0097.up.railway.app/login' : 'http://127.0.0.1:3000/registro';  // Cambia la URL dependiendo de la acción
+    const url = isLogin ? 'https://nodejs-production-0097.up.railway.app/login' : 'https://nodejs-production-0097.up.railway.app/registro';  // Cambia la URL dependiendo de la acción
     const method = 'POST';
-
+    
     // Realiza el fetch a la URL correspondiente
     fetch(url, {
         method: method,
@@ -48,14 +48,14 @@ form.addEventListener('submit', function(event) {
                     localStorage.setItem('loggedIn', 'true');
                     localStorage.setItem('username', username);
                     form.reset(); // Limpia el formulario
-                    window.location.href = 'http://127.0.0.1:3000/pages/adminfac.html';
+                    window.location.href = 'https://nodejs-production-0097.up.railway.app/pages/adminfac.html';
                 } else {
                     localStorage.removeItem("cart");
                     const username = form.elements['username'].value;
                     localStorage.setItem('loggedIn', 'true');
                     localStorage.setItem('username', username);
                     form.reset(); // Limpia el formulario
-                    window.location.href = 'http://127.0.0.1:3000/index.html';
+                    window.location.href = 'https://nodejs-production-0097.up.railway.app/index.html';
                 }
             })
             .catch((error) => {
@@ -71,7 +71,7 @@ form.addEventListener('submit', function(event) {
 });
 
 function validarData(username, password) {
-    const url = 'http://127.0.0.1:3000/validarUsuario';
+    const url = 'https://nodejs-production-0097.up.railway.app/validarUsuario';
 
     return fetch(url, {
         method: 'POST',

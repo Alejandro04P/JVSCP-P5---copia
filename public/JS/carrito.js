@@ -111,7 +111,7 @@ window.addEventListener('popstate', () => {
 });
 function carritoSelect() {
     const user = localStorage.getItem('username'); // Obtener el username almacenado
-    fetch(`http://127.0.0.1:3000/carrose?user=${encodeURIComponent(user)}`, {
+    fetch(`https://nodejs-production-0097.up.railway.app/carrose?user=${encodeURIComponent(user)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

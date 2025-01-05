@@ -8,7 +8,7 @@
     .replace('Relleno: ', '') // Reemplaza "Relleno: " con una cadena vacía
     .trim(); // Elimina espacios en blanco adicionales
 
-    fetch('http://127.0.0.1:3000/carroup', {
+    fetch('https://nodejs-production-0097.up.railway.app/carroup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function carritoInsert(button){
     const nombre_producto = productCard.querySelector('.card-title').textContent.trim(); // Obtiene el texto del producto
     const cantidad = parseInt(productCard.querySelector('.quantity').value, 10);
     const valor_unitario = parseFloat(productCard.querySelector('.card-price').textContent.replace('$', ''));
-    const url = 'http://127.0.0.1:3000/carro';
+    const url = 'https://nodejs-production-0097.up.railway.app/carro';
     const rellenos = productCard.querySelector('.flavor-select');
     const relleno = rellenos.options[rellenos.selectedIndex].textContent;
     const image = productCard.querySelector('img').getAttribute('src'); // Obtén la URL de la imagen
@@ -101,7 +101,7 @@ function carritoRemove(button){
     const relleno = productCard.querySelector('.product-flavor').textContent
     .replace('Relleno: ', '') // Reemplaza "Relleno: " con una cadena vacía
     .trim(); // Elimina espacios en blanco adicionales'
-    const url = 'http://127.0.0.1:3000/carrorem';
+    const url = 'https://nodejs-production-0097.up.railway.app/carrorem';
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Filtrar los productos que no coincidan con el que se desea eliminar
@@ -169,7 +169,7 @@ function facturaUser() {
             }).then((result) => {
                 if (result.isConfirmed || result.dismiss === Swal.DismissReason.backdrop) {
                     // Redirigir al usuario después de cerrar la alerta o hacer clic fuera
-                    window.location.href = 'http://127.0.0.1:3000/index.html';
+                    window.location.href = 'https://nodejs-production-0097.up.railway.app/index.html';
                 }
             });
         } catch (error) {
@@ -188,7 +188,7 @@ function createFac() {
         return;
     }
 
-    const url = 'http://127.0.0.1:3000/factura';
+    const url = 'https://nodejs-production-0097.up.railway.app/factura';
 
     fetch(url, {
         method: 'POST',
@@ -202,7 +202,7 @@ function createFac() {
             if (data.success) {
                 alert('Factura y detalles insertados con éxito');
                 localStorage.removeItem('cart'); // Limpiar el carrito después de la compra
-                window.location.href = 'http://127.0.0.1:3000/index.html'; // Redirigir al inicio
+                window.location.href = 'https://nodejs-production-0097.up.railway.app/index.html'; // Redirigir al inicio
             } else {
                 alert('Stock Insuficiente: ' + data.message);
             }
