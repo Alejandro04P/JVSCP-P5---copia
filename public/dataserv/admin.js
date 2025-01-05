@@ -176,26 +176,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
                     loadUsuarios('#usuario');
                     loadProductos('#producto');
+                    loadFacturas('#idFacturaFiltro');
                 } else if (selectedTable === 'factura') {
                     loadUsuarios('#usuario');
                 }
             }
         });
     });
-
     function loadUsuarios(selector) {
-        const usuarios = ["Juan Pérez", "Ana Gómez", "Luis Torres"]; // Simulación
-        const select = document.querySelector(selector);
-        if (select) {
-            select.innerHTML = usuarios.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('');
-        }
+        fetch('https://nodejs-production-0097.up.railway.app/usuarios')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.nombre_usuario}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar usuarios:', error));
+    }
+    
+    function loadProductos(selector) {
+        fetch('https://nodejs-production-0097.up.railway.app/productos')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(producto => `<option value="${producto.id_producto}">${producto.nombre_producto}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
     }
 
-    function loadProductos(selector) {
-        const productos = ["Producto A", "Producto B", "Producto C"]; // Simulación
-        const select = document.querySelector(selector);
-        if (select) {
-            select.innerHTML = productos.map(producto => `<option value="${producto}">${producto}</option>`).join('');
-        }
+    function loadFacturas(selector) {
+        fetch('https://nodejs-production-0097.up.railway.app/facturas')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(factura => `<option value="${factura.id_factura}">${factura.id_factura}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar facturas:', error));
     }
 });

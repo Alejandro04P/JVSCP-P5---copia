@@ -472,9 +472,34 @@ app.post('/validarUsuario', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error en el servidor' });
     }
 });
+// Ruta para obtener usuarios
+app.get('/usuarios', (req, res) => {
+    const query = 'SELECT id_usuario, nombre_usuario FROM usuarios';
+    db.query(query, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
 
+// Ruta para obtener productos
+app.get('/productos', (req, res) => {
+    const query = 'SELECT id_producto, nombre_producto FROM productos';
+    db.query(query, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
+// Ruta para obtener ID de facturas
+app.get('/facturas', (req, res) => {
+    const query = 'SELECT id_factura FROM facturas';
+    db.query(query, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
 // Inicializar el servidor
 
