@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+/*const { Sequelize } = require('sequelize');
 require('dotenv').config(); 
 
 // Inicializar Sequelize con la configuración desde el archivo .env
@@ -23,3 +23,24 @@ async function verifyConection () {
 }
 
 module.exports = {verifyConection, sequelize};
+*/
+const { Sequelize } = require('sequelize');
+require('dotenv').config();
+
+// Conexión usando la URL completa de la base de datos
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres', // Especifica PostgreSQL como dialecto
+  logging: false,      // Opcional: desactiva los logs de SQL
+});
+
+// Verificar conexión
+async function verifyConection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión exitosa a la base de datos.');
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error);
+  }
+}
+
+module.exports = { verifyConection, sequelize };
