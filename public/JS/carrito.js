@@ -105,8 +105,6 @@ function initializeCartPage() {
 document.addEventListener('DOMContentLoaded', () => {
     initializeCartPage();
 });
-
-
 // Detecta cambios en la URL para Single Page Applications (SPA)
 window.addEventListener('popstate', () => {
     initializeCartPage();
