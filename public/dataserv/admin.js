@@ -1,3 +1,4 @@
+/* data MIRAAAAAA
 document.addEventListener('DOMContentLoaded', () => {
     const options = document.querySelectorAll('.crud-option');
     const contentTitle = document.getElementById('crud-content-title');
@@ -148,6 +149,160 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button type="submit" class="crud-button">Eliminar</button>
                 </form>
             `,
+            select: `
+                <form>
+                    <h3>Consultar Detalles de Factura</h3>
+                    <label for="idFacturaFiltro">ID de la Factura:</label>
+                    <select id="idFacturaFiltro" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con IDs de facturas -->
+                    </select>
+                    <label for="productoFiltro">Producto:</label>
+                    <select id="producto"" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de productos -->
+                    </select>
+                    <button type="submit" class="crud-button">Consultar</button>
+                </form>
+            `,
+        },
+    };
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const action = option.dataset.action;
+            const selectedTable = tableSelector.value;
+            contentTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} Registro en ${selectedTable}`;
+            formContainer.innerHTML = forms[selectedTable][action];
+            const form = formContainer.querySelector('form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                handleAction(selectedTable, action, new FormData(form));
+            });
+
+
+            if (action === 'insert' || action === 'select') {
+                if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
+                    loadUsuarios('#usuario');
+                    loadProductos('#producto');
+                    loadFacturas('#idFacturaFiltro');
+                } else if (selectedTable === 'factura') {
+                    loadUsuarios('#usuario');
+                }
+            }
+        });
+    });
+    function loadUsuarios(selector) {
+        fetch('https://nodejs-production-0097.up.railway.app/usuarios')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar usuarios:', error));
+    }
+    
+    function loadProductos(selector) {
+        fetch('https://nodejs-production-0097.up.railway.app/productos')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(producto => 
+                        `<option value="${producto.id_producto}">(${producto.id_producto}) ${producto.pro_descripcion}-(${producto.pro_relleno})</option>`
+                    ).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
+    }
+
+    function loadFacturas(selector) {
+        fetch('https://nodejs-production-0097.up.railway.app/facturas')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = data.map(factura => `<option value="${factura.id_factura}">${factura.id_factura}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar facturas:', error));
+    }
+
+    function handleAction(table, action, formData) {
+        let url = `https://nodejs-production-0097.up.railway.app/${table}`;
+        let method = 'POST'; // Default to POST for inserts
+
+        if (action === 'update') {
+            url += `/update`;
+            method = 'PUT';
+        } else if (action === 'delete') {
+            url += `/delete`;
+            method = 'DELETE';
+        } else if (action === 'select') {
+            url += `/select`;
+            method = 'GET';
+        }
+
+        const data = Object.fromEntries(formData.entries());
+
+        fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Resultado:', result);
+                alert(`Acción ${action} realizada con éxito`);
+            })
+            .catch(error => {
+                console.error('Error al realizar la acción:', error);
+                alert('Hubo un error al realizar la acción');
+            });
+    }
+
+});
+*/
+document.addEventListener('DOMContentLoaded', () => {
+    const options = document.querySelectorAll('.crud-option');
+    const contentTitle = document.getElementById('crud-content-title');
+    const formContainer = document.getElementById('form-container');
+    const tableSelector = document.getElementById('table-select');
+
+    const forms = {
+        carrito: {
+            select: `
+                <form>
+                    <h3>Consultar Registros del Carrito</h3>
+                    <label for="filtroUsuario">Usuario:</label>
+                    <select id="usuario" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de usuarios -->
+                    </select>
+                    <label for="filtroProducto">Producto:</label>
+                    <select id="producto" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de productos -->
+                    </select>
+                    <button type="submit" class="crud-button">Consultar</button>
+                </form>
+            `,
+        },
+        factura: {
+            select: `
+                <form>
+                    <h3>Consultar Facturas</h3>
+                    <label for="filtroUsuario">Usuario:</label>
+                    <select id="usuario" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de usuarios -->
+                    </select>
+                    <label for="filtroFecha">Fecha:</label>
+                    <input type="date" id="filtroFecha" class="crud-input">
+                    <button type="submit" class="crud-button">Consultar</button>
+                </form>
+            `,
+        },
+        detalleFactura: {
             select: `
                 <form>
                     <h3>Consultar Detalles de Factura</h3>
