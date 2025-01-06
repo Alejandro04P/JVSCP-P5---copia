@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const select = document.querySelector(selector);
                 if (select) {
                     select.innerHTML = data.map(producto => 
-                        `<option value="${producto.id_producto}">${producto.pro_descripcion}-(${producto.pro_relleno})</option>`
+                        `<option value="${producto.id_producto}">(${producto.id_producto}) ${producto.pro_descripcion}-(${producto.pro_relleno})</option>`
                     ).join('');
                 }
             })
