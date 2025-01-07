@@ -302,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <select id="filtroEstado" class="crud-input">
                         <option value="activa">Activa</option>
                         <option value="inactiva">Inactiva</option>
+                         <option value="pendiente">Pendiente</option>               
                     </select>
                     <label for="actualizarEstado">¿Desea actualizar el estado?</label>
                     <select id="actualizarEstado" class="crud-input" onchange="mostrarCampoActualizarEstado()">
@@ -313,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <select id="nuevoEstado" class="crud-input">
                             <option value="activa">Activa</option>
                             <option value="inactiva">Inactiva</option>
+                            <option value="pendiente">Pendiente</option>
                         </select>
                     </div>
                     <button type="submit" class="crud-button">Consultar</button>
