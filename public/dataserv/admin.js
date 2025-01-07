@@ -290,16 +290,23 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         factura: {
             select: `
-                <form>
-                    <h3>Filtrar Registros de las Facturas</h3>
-                    <label for="filtroUsuario">Usuario:</label>
-                    <select id="usuario" class="crud-input">
-                        <!-- Opciones dinámicas cargadas con nombres de usuarios -->
-                    </select>
-                    <label for="filtroFecha">Fecha:</label>
-                    <input type="date" id="filtroFecha" class="crud-input">
-                    <button type="submit" class="crud-button">Consultar</button>
-                </form>
+               <form>
+                <h3>Filtrar Registros de las Facturas</h3>
+                <label for="filtroUsuario">Usuario:</label>
+                <select id="usuario" class="crud-input">
+                    <!-- Opciones dinámicas cargadas con nombres de usuarios -->
+                </select>
+                <label for="filtroFecha">Fecha:</label>
+                <input type="date" id="filtroFecha" class="crud-input">
+                <label for="filtroEstado">Estado:</label>
+                <select id="filtroEstado" class="crud-input">
+                    <option value="activa">Activa</option>
+                    <option value="inactiva">Inactiva</option>
+                    <option value="pendiente">Pendiente</option>
+                </select>
+                <button type="submit" class="crud-button">Consultar</button>
+            </form>
+
             `,
         },
         detalleFactura: {
