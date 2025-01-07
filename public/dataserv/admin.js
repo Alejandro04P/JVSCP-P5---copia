@@ -278,10 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros del Carrito</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
+                     <option value="usuarioc" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroProducto">Producto:</label>
                     <select id="producto" class="crud-input">
+                     <option value="prodcutoc" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <button type="submit" class="crud-button">Consultar</button>
@@ -294,12 +296,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros de las Facturas</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
+                      <option value="Usuarios" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroFecha">Fecha:</label>
                     <input type="date" id="filtroFecha" class="crud-input">
                     <label for="filtroEstado">Estado:</label>
                     <select id="filtroEstado" class="crud-input">
+                        <option value="factura" selected>Todos</option>
                         <option value="activa">Activa</option>
                         <option value="inactiva">Inactiva</option>
                          <option value="pendiente">Pendiente</option>               
@@ -327,6 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros en Detalles de Factura</h3>
                     <label for="idFacturaFiltro">ID de la Factura:</label>
                     <select id="idFacturaFiltro" class="crud-input">
+                    <option value="dfactura" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con IDs de facturas -->
                     </select>
                     <label for="productoFiltro">Producto:</label>
