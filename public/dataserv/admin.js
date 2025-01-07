@@ -278,12 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros del Carrito</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
-                     <option value="usuarioc" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroProducto">Producto:</label>
-                    <select id="producto" class="crud-input">
-                     <option value="prodcutoc" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <button type="submit" class="crud-button">Consultar</button>
@@ -296,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros de las Facturas</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
-                      <option value="Usuarios" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroFecha">Fecha:</label>
@@ -331,7 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Filtrar Registros en Detalles de Factura</h3>
                     <label for="idFacturaFiltro">ID de la Factura:</label>
                     <select id="idFacturaFiltro" class="crud-input">
-                    <option value="dfactura" selected>Todos</option>
                         <!-- Opciones dinámicas cargadas con IDs de facturas -->
                     </select>
                     <label for="productoFiltro">Producto:</label>
@@ -375,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
+                    select.innerHTML = `<option value = "usuarioc" selected>Todos</option>` + data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar usuarios:', error));
@@ -401,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = data.map(factura => `<option value="${factura.id_factura}">${factura.id_factura}</option>`).join('');
+                    select.innerHTML = `<option value="dfactura" selected>Todos</option>` + data.map(factura => `<option value="${factura.id_factura}">${factura.id_factura}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar facturas:', error));
