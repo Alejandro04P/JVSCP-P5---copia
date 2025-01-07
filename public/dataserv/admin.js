@@ -281,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
                     <label for="filtroProducto">Producto:</label>
+                    <select id="producto"" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <button type="submit" class="crud-button">Consultar</button>
