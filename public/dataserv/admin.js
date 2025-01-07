@@ -291,22 +291,32 @@ document.addEventListener('DOMContentLoaded', () => {
         factura: {
             select: `
                <form>
-                <h3>Filtrar Registros de las Facturas</h3>
-                <label for="filtroUsuario">Usuario:</label>
-                <select id="usuario" class="crud-input">
-                    <!-- Opciones dinámicas cargadas con nombres de usuarios -->
-                </select>
-                <label for="filtroFecha">Fecha:</label>
-                <input type="date" id="filtroFecha" class="crud-input">
-                <label for="filtroEstado">Estado:</label>
-                <select id="filtroEstado" class="crud-input">
-                    <option value="activa">Activa</option>
-                    <option value="inactiva">Inactiva</option>
-                    <option value="pendiente">Pendiente</option>
-                </select>
-                <button type="submit" class="crud-button">Consultar</button>
-            </form>
-
+                    <h3>Filtrar Registros de las Facturas</h3>
+                    <label for="filtroUsuario">Usuario:</label>
+                    <select id="usuario" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de usuarios -->
+                    </select>
+                    <label for="filtroFecha">Fecha:</label>
+                    <input type="date" id="filtroFecha" class="crud-input">
+                    <label for="filtroEstado">Estado:</label>
+                    <select id="filtroEstado" class="crud-input">
+                        <option value="activa">Activa</option>
+                        <option value="inactiva">Inactiva</option>
+                    </select>
+                    <label for="actualizarEstado">¿Desea actualizar el estado?</label>
+                    <select id="actualizarEstado" class="crud-input" onchange="mostrarCampoActualizarEstado()">
+                        <option value="no">No</option>
+                        <option value="si">Sí</option>
+                    </select>
+                    <div id="nuevoEstadoDiv" style="display: none;">
+                        <label for="nuevoEstado">Nuevo Estado:</label>
+                        <select id="nuevoEstado" class="crud-input">
+                            <option value="activa">Activa</option>
+                            <option value="inactiva">Inactiva</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="crud-button">Consultar</button>
+                </form>
             `,
         },
         detalleFactura: {
@@ -351,6 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
     function loadUsuarios(selector) {
         fetch('https://nodejs-production-0097.up.railway.app/usuarios')
             .then(response => response.json())
@@ -447,3 +458,14 @@ function handleAction(table, action, formData) {
             alert('Hubo un error al realizar la consulta');
         });
 }
+
+function mostrarCampoActualizarEstado() {
+    const actualizarEstado = document.getElementById('actualizarEstado').value;
+    const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
+    if (actualizarEstado === 'si') {
+        nuevoEstadoDiv.style.display = 'block';
+    } else {
+        nuevoEstadoDiv.style.display = 'none';
+    }
+}
+
