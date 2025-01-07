@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error al cargar facturas:', error));
     }
 
-    function handleAction(table, action, formData) {
+/*    function handleAction(table, action, formData) {
         let url = `https://nodejs-production-0097.up.railway.app/${table}`;
         let method = 'POST'; // Default to POST for inserts
 
@@ -416,5 +416,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Hubo un error al realizar la acción');
             });
     }
+*/
+}); 
+function handleAction(table, action, formData) {
+    if (action !== 'select') {
+        alert('Solo se permiten consultas.');
+        return;
+    }
 
-});
+    // Construir la URL con parámetros de consulta
+    const queryParams = new URLSearchParams(formData).toString();
+    const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
+
+    // Realizar la solicitud GET
+    fetch(url)
+        .then(response => response.json())
+        .then(result => {
+            console.log('Resultados:', result);
+            alert('Consulta realizada con éxito');
+        })
+        .catch(error => {
+            console.error('Error al realizar la consulta:', error);
+            alert('Hubo un error al realizar la consulta');
+        });
+}
