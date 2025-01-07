@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         carrito: {
             select: `
                 <form>
-                    <h3>Consultar Registros del Carrito</h3>
+                    <h3>Filtrar Registros del Carrito</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         factura: {
             select: `
                 <form>
-                    <h3>Consultar Facturas</h3>
+                    <h3>Filtrar Registros de las Facturas</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detalleFactura: {
             select: `
                 <form>
-                    <h3>Consultar Detalles de Factura</h3>
+                    <h3>Filtrar Registros en Detalles de Factura</h3>
                     <label for="idFacturaFiltro">ID de la Factura:</label>
                     <select id="idFacturaFiltro" class="crud-input">
                         <!-- Opciones dinámicas cargadas con IDs de facturas -->
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         option.addEventListener('click', () => {
             const action = option.dataset.action;
             const selectedTable = tableSelector.value;
-            contentTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} Registro en ${selectedTable}`;
+            contentTitle.textContent = `Registros en ${selectedTable}`;
             formContainer.innerHTML = forms[selectedTable][action];
             const form = formContainer.querySelector('form');
             form.addEventListener('submit', (event) => {
