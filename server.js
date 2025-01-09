@@ -542,7 +542,7 @@ app.get('/productos/fac', async (req, res) => {
             productos = await dbA.query(`
                 SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
                 FROM proxfac pf
-                JOIN productos p ON c.id_producto = p.id_producto
+                JOIN productos p ON pf.id_producto = p.id_producto
             `, {
                 replacements: { factura },
                 type: QueryTypes.SELECT
@@ -551,7 +551,7 @@ app.get('/productos/fac', async (req, res) => {
             productos = await dbA.query(`
                 SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
                 FROM proxfac pf
-                JOIN productos p ON c.id_producto = p.id_producto
+                JOIN productos p ON pf.id_producto = p.id_producto
                 WHERE pf.id_factura = :factura
             `, {
                 replacements: { factura },
