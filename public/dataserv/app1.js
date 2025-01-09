@@ -39,6 +39,7 @@ form.addEventListener('submit', function(event) {
            
             const username1 = form.username.value.trim();
             const password = form.password.value.trim();
+        
             
             // Llamar a validarData para verificar los datos
             validarData(username1, password).then((esValido) => {

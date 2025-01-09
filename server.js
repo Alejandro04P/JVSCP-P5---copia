@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 //const PORT = 3000;
 const { QueryTypes, Sequelize } = require('sequelize');
-const { verifyConection, sequelize: dbA,  } = require('./conexion')
+const { verifyConection, sequelize: dbA, } = require('./conexion')
 
 
 // Middleware para servir archivos estáticos y parsear JSON
@@ -499,17 +499,41 @@ app.get('/usuarios', async (req, res) => {
     }
 });
 app.get('/productos', async (req, res) => {
+    const { usuario } = req.query; // Obtén el ID del usuario desde la query string
+
     try {
-        const productos = await dbA.query(
-            'SELECT id_producto, pro_descripcion, pro_relleno FROM productos',
-            { type: QueryTypes.SELECT }
-        );
-        res.json(productos);
+     // Asegúrate de reemplazar esto con tu consulta real a la base de datos
+        if(usuario === 'Todos'){
+            const productos = await db.query(`
+                SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
+                FROM carrito c
+                JOIN productos p ON c.id_producto = p.id_producto
+            `, {
+                replacements: { usuario },
+                type: db.QueryTypes.SELECT
+            });
+        }else{
+            const productos = await db.query(`
+                SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
+                FROM carrito c
+                JOIN productos p ON c.id_producto = p.id_producto
+                WHERE c.id_usuario = :usuario
+            `, {
+                replacements: { usuario },
+                type: db.QueryTypes.SELECT
+            });
+        }
+       
+
+        res.json(productos); // Envía los productos encontrados al cliente
     } catch (error) {
-        console.error('Error al obtener productos:', error);
-        res.status(500).json({ success: false, message: 'Error al obtener productos' });
+        console.error('Error al obtener productos por usuario:', error);
+        res.status(500).json({ error: 'Error al obtener productos' });
     }
 });
+
+
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });

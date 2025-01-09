@@ -353,19 +353,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
 
-            if (action === 'insert' || action === 'select') {
-                if (selectedTable === 'carrito' || selectedTable === 'detalleFactura') {
-                    loadUsuarios('#usuario');
-                    loadProductos('#producto');
-                    loadFacturas('#idFacturaFiltro');
+            if (action === 'select') {
+                if (selectedTable === 'carrito') {
+                    loadUsuarios('#usuario',selectedTable);
                 } else if (selectedTable === 'factura') {
-                    loadUsuarios('#usuario');
+                    loadUsuarios('#usuario',selectedTable);
+                }else {
+                    loadFacturas('#idFacturaFiltro');
+                    //loadProductos('#producto');
                 }
             }
         });
     });
 
-    function loadUsuarios(selector) {
+    function loadUsuarios(selector,tabla) {
         fetch('https://nodejs-production-0097.up.railway.app/usuarios')
             .then(response => response.json())
             .then(data => {
@@ -373,8 +374,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (select) {
                     select.innerHTML = `<option value = "usuarioc" selected>Todos</option>` + data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
                 }
+                
+                select.addEventListener('change', (event) => {
+                    const usuarioSeleccionado = event.target.value;
+                    loadProductosPorUsuario('#producto', usuarioSeleccionado);
+                        //loadProductosPorClientesConFacturas('#producto'); 
+                });
             })
             .catch(error => console.error('Error al cargar usuarios:', error));
+    }
+
+    function loadProductosPorUsuario(selector, idUsuario) {
+        fetch(`https://nodejs-production-0097.up.railway.app/productos?usuario=${idUsuario}`)
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = `<option value="todos" selected>Todos los productos</option>` + 
+                        data.map(producto => `<option value="${producto.id_producto}">${producto.nombre}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
+    }
+
+    function loadProductosPorClientesConFacturas(selector) {
+        fetch(`https://nodejs-production-0097.up.railway.app/productos/facturas`)
+            .then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = `<option value="todos" selected>Productos relacionados con clientes con facturas</option>` + 
+                        data.map(producto => `<option value="${producto.id_producto}">${producto.nombre}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar productos por clientes con facturas:', error));
     }
     
     function loadProductos(selector) {
@@ -439,6 +472,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 */
 }); 
+
+/*
 function handleAction(table, action, formData) {
     if (action !== 'select') {
         alert('Solo se permiten consultas.');
@@ -450,7 +485,10 @@ function handleAction(table, action, formData) {
     const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
 
     // Realizar la solicitud GET
-    fetch(url)
+    fetch(url{
+        method: GET
+    })
+        
         .then(response => response.json())
         .then(result => {
             console.log('Resultados:', result);
@@ -460,7 +498,7 @@ function handleAction(table, action, formData) {
             console.error('Error al realizar la consulta:', error);
             alert('Hubo un error al realizar la consulta');
         });
-}
+}*/
 
 function mostrarCampoActualizarEstado() {
     const actualizarEstado = document.getElementById('actualizarEstado').value;
