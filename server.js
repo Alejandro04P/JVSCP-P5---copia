@@ -572,7 +572,7 @@ app.get('/facturacli', async (req, res) => {
         console.log(usuario);
         if(!usuario){
             facturas = await dbA.query(`
-                SELECT DISTINCT f.id_factura
+                SELECT f.id_factura 
                 FROM facturas f
             `, {
                 replacements: { usuarioint },
