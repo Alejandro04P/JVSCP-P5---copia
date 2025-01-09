@@ -565,9 +565,9 @@ app.get('/productos/fac', async (req, res) => {
 app.get('/facturacli', async (req, res) => {
     const { usuario } = req.query; // Obtén el ID del usuario desde la query string
     console.log('Datos recibidos:', { usuario });
+    const usuarioint = parseInt(usuario,10); // Convierte a número entero
     try {
-     // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
-     const usuarioint = parseInt(usuario,10); // Convierte a número entero
+     // Asegúrate de reemplazSar esto con tu consulta real a la base de datos 
      let facturas; 
         if(!usuarioint){
             facturas = await dbA.query(`
@@ -582,7 +582,6 @@ app.get('/facturacli', async (req, res) => {
             facturas = await dbA.query(`
                 SELECT DISTINCT f.id_factura
                 FROM facturas f
-                JOIN usuarios u ON f.id_usuario = u.id_usuario
                 WHERE f.id_usuario = :usuarioint
             `, {
                 replacements: { usuarioint },
@@ -591,8 +590,8 @@ app.get('/facturacli', async (req, res) => {
         }
         res.json(facturas); // Envía los productos encontrados al cliente
     } catch (error) {
-        console.error('Error al obtener productos por usuario:', error);
-        res.status(500).json({ error: 'Error al obtener productos' });
+        console.error('Error al obtener factura por usuario:', error);
+        res.status(500).json({ error: 'Error al obtener factura' });
     }
 });
 

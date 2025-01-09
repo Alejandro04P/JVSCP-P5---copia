@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         data.map(facturas => `<option value="${facturas.id_factura}">${facturas.id_factura}</option>`).join('');
                 }
             })
-        .catch(error => console.error('Error al cargar productos:', error));
+        .catch(error => console.error('Error al cargar factura:', error));
       
     }
     function loadProductosPorUsuario(selector, idUsuario) {
