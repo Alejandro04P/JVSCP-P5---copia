@@ -400,25 +400,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const select = document.querySelector(selector);
                 if (select) {
                     select.innerHTML = 
-                        data.map(producto => `<option value="${producto.id_producto}">${producto.nombre}</option>`).join('');
+                        data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar productos:', error));
     }
 
-    function loadProductosPorClientesConFacturas(selector) {
-        fetch(`https://nodejs-production-0097.up.railway.app/productos/facturas`)
-            .then(response => response.json())
-            .then(data => {
-                const select = document.querySelector(selector);
-                if (select) {
-                    select.innerHTML = `<option value="todos" selected>Productos relacionados con clientes con facturas</option>` + 
-                        data.map(producto => `<option value="${producto.id_producto}">${producto.nombre}</option>`).join('');
-                }
-            })
-            .catch(error => console.error('Error al cargar productos por clientes con facturas:', error));
-    }
-    
     function loadProductos(selector) {
         fetch('https://nodejs-production-0097.up.railway.app/productos')
             .then(response => response.json())
