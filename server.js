@@ -588,6 +588,7 @@ app.get('/facturacli', async (req, res) => {
             });
         }
         res.json(facturas); // Envía los productos encontrados al cliente
+        console.log(facturas);
     } catch (error) {
         console.error('Error al obtener factura por usuario:', error);
         res.status(500).json({ error: 'Error al obtener factura' });
