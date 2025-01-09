@@ -569,6 +569,7 @@ app.get('/facturacli', async (req, res) => {
     try {
      // Asegúrate de reemplazSar esto con tu consulta real a la base de datos 
      let facturas; 
+        console.log(usuario);
         if(!usuario){
             facturas = await dbA.query(`
                 SELECT DISTINCT f.id_factura

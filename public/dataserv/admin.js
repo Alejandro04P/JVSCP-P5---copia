@@ -408,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(response => response.json())
             .then(data => {
                 const select = document.querySelector(selector);
-                alert(select);
                 if (select) {
                     select.innerHTML = 
                         data.map(facturas => `<option value="${facturas.id_factura}">${facturas.id_factura}</option>`).join('');
