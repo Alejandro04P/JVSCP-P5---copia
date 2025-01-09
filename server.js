@@ -5,9 +5,7 @@ const cors = require('cors');
 const app = express();
 //const PORT = 3000;
 const { QueryTypes, Sequelize } = require('sequelize');
-const { verifyConection, sequelize: dbA, } = require('./conexion')
-
-
+const { verifyConection, sequelize: dbA, } = require('./conexion');
 // Middleware para servir archivos estáticos y parsear JSON
 app.use(cors());
 // Habilitar CORS
@@ -564,7 +562,38 @@ app.get('/productos/fac', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener productos' });
     }
 });
-
+app.get('/facturacli', async (req, res) => {
+    const { usuario } = req.query; // Obtén el ID del usuario desde la query string
+    console.log('Datos recibidos:', { usuario });
+    try {
+     // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
+     let facturas; 
+        if(!usuario){
+            facturas = await dbA.query(`
+                SELECT DISTINCT f.id_factura
+                FROM facturas f
+                JOIN usuarios u ON f.id_usuario = u.id_usuario
+            `, {
+                replacements: { usuario },
+                type: QueryTypes.SELECT
+            });
+        }else{
+            facturas = await dbA.query(`
+                SELECT DISTINCT f.id_factura
+                FROM facturas f
+                JOIN usuarios u ON f.id_usuario = u.id_usuario
+                WHERE f.id_usuario = :usuario
+            `, {
+                replacements: { usuario },
+                type: QueryTypes.SELECT
+            });
+        }
+        res.json(facturas); // Envía los productos encontrados al cliente
+    } catch (error) {
+        console.error('Error al obtener productos por usuario:', error);
+        res.status(500).json({ error: 'Error al obtener productos' });
+    }
+});
 
 
 app.get('/', (req, res) => {

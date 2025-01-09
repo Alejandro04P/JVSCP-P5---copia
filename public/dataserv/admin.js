@@ -296,6 +296,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <select id="usuario" class="crud-input">
                         <!-- Opciones dinámicas cargadas con nombres de usuarios -->
                     </select>
+                    <label for="idFacturas">Facturas:</label>
+                    <select id="facturas"" class="crud-input">
+                        <!-- Opciones dinámicas cargadas con nombres de productos -->
+                    </select>
                     <label for="filtroFecha">Fecha:</label>
                     <input type="date" id="filtroFecha" class="crud-input">
                     <label for="filtroEstado">Estado:</label>
@@ -317,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <option value="inactiva">Inactiva</option>
                             <option value="pendiente">Pendiente</option>
                         </select>
-                        <button id="btnActualizar" type="button" class="crud-button">Actualizar</button>
+                        <button id="btnActualizar" type="button" class="crud-button" onclick="actualizarEstadoFac(#nuevoEstado)">Actualizar</button>
                     </div>
                     <button type="submit" class="crud-button">Consultar</button>
                 </form>
@@ -356,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (action === 'select') {
                 if (selectedTable === 'carrito') {
                     loadUsuarios('#usuario',selectedTable);
+            
                 } else if (selectedTable === 'factura') {
                     loadUsuarios('#usuario',selectedTable);
                 }else {
@@ -378,14 +383,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     select.addEventListener('change', (event) => {
                         const usuarioSeleccionado = event.target.value;
                         loadProductosPorUsuario('#producto', usuarioSeleccionado);
-                            //loadProductosPorClientesConFacturas('#producto'); 
+                               
                     });
+                }else{
+                    select.addEventListener('change', (event) => {
+                        const usuarioSeleccionado = event.target.value;
+                        loadClientesFacturas('#idFacturas',usuarioSeleccionado);                 
+                    });     
                 }
                
             })
             .catch(error => console.error('Error al cargar usuarios:', error));
     }
 
+    function loadClientesFacturas(selector,idUsuario){
+        const url = idUsuario === 'usuarioc' 
+        ? `https://nodejs-production-0097.up.railway.app/facturacli` // Sin query string
+        : `https://nodejs-production-0097.up.railway.app/facturacli?usuario=${encodeURIComponent(idUsuario)}`;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = 
+                        data.map(facturas => `<option value="${facturas.id_factura}">${facturas.id_factura}</option>`).join('');
+                }
+            })
+        .catch(error => console.error('Error al cargar productos:', error));
+      
+    }
     function loadProductosPorUsuario(selector, idUsuario) {
         const url = idUsuario === 'usuarioc' 
         ? `https://nodejs-production-0097.up.railway.app/productos` // Sin query string
@@ -482,6 +512,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 */
+
+    
 }); 
 
 /*
@@ -510,7 +542,32 @@ function handleAction(table, action, formData) {
             alert('Hubo un error al realizar la consulta');
         });
 }*/
-
+    function actualizarEstadoFac(selector){
+        const url = `https://nodejs-production-0097.up.railway.app/estadofac`;
+        const select = document.querySelector(selector);
+        select.addEventListener('change', (event) => {
+            const estadoSeleccionado = event.target.value;  
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({estadoSeleccionado}),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert("Factura actualizada");
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al añadir al carrito');
+                });
+        });
+    }
     function mostrarCampoActualizarEstado() {
         const actualizarEstado = document.getElementById('actualizarEstado').value;
         const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
