@@ -385,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProductosPorUsuario(selector, idUsuario) {
+        alert(idUsuario);
         fetch(`https://nodejs-production-0097.up.railway.app/productos?usuario=${idUsuario}`)
             .then(response => response.json())
             .then(data => {
