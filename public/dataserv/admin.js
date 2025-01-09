@@ -374,12 +374,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (select) {
                     select.innerHTML = `<option value = "usuarioc" selected>Todos</option>` + data.map(usuario => `<option value="${usuario.id_usuario}">${usuario.username}</option>`).join('');
                 }
-                
-                select.addEventListener('change', (event) => {
-                    const usuarioSeleccionado = event.target.value;
-                    loadProductosPorUsuario('#producto', usuarioSeleccionado);
-                        //loadProductosPorClientesConFacturas('#producto'); 
-                });
+                if(tabla === 'carrito'){
+                    select.addEventListener('change', (event) => {
+                        const usuarioSeleccionado = event.target.value;
+                        loadProductosPorUsuario('#producto', usuarioSeleccionado);
+                            //loadProductosPorClientesConFacturas('#producto'); 
+                    });
+                }
+               
             })
             .catch(error => console.error('Error al cargar usuarios:', error));
     }
