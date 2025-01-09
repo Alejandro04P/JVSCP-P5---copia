@@ -552,7 +552,7 @@ app.get('/productos/fac', async (req, res) => {
                 SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor
                 FROM proxfac pf
                 JOIN productos p ON pf.id_producto = p.id_producto
-                WHERE .id_factura = :factura
+                WHERE pf.id_factura = :factura
             `, {
                 replacements: { factura },
                 type: QueryTypes.SELECT
