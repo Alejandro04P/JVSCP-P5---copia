@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="no">No</option>
                         <option value="si">Sí</option>
                     </select>
-                    <div id="nuevoEstadoDiv" style="display: none; display: flex; align-items: center; gap: 10px;">
+                    <div id="nuevoEstadoDiv" style="display: none; align-items: center; gap: 10px;">
                         <label for="nuevoEstado">Nuevo Estado:</label>
                         <select id="nuevoEstado" class="crud-input">
                             <option value="activa">Activa</option>
@@ -352,8 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 handleAction(selectedTable, action, new FormData(form));
             });
-            const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
-            nuevoEstadoDiv.style.display = 'none'; // Asegura que esté oculto inicialmente
+        
             if (action === 'select') {
                 if (selectedTable === 'carrito') {
                     loadUsuarios('#usuario',selectedTable);
