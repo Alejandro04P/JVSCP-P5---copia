@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }else{
                     select.addEventListener('change', (event) => {
                         const usuarioSeleccionado = event.target.value;
-                        loadClientesFacturas('#idFacturas',usuarioSeleccionado);                 
+                        loadClientesFacturas('#facturas',usuarioSeleccionado);                 
                     });     
                 }
                
