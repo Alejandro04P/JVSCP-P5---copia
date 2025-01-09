@@ -500,27 +500,29 @@ app.get('/usuarios', async (req, res) => {
 });
 app.get('/productos', async (req, res) => {
     const { usuario } = req.query; // Obtén el ID del usuario desde la query string
-    console.log('Datos recibidos:', { user });
+    console.log('Datos recibidos:', { usuario });
     try {
      // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
+     let productos; 
         if(!usuario){
-            const productos = await db.query(`
+           
+            productos = await db.query(`
                 SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
             `, {
                 replacements: { usuario },
-                type: db.QueryTypes.SELECT
+                type: dba.QueryTypes.SELECT
             });
         }else{
-            const productos = await db.query(`
+            productos = await db.query(`
                 SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
                 WHERE c.id_usuario = :usuario
             `, {
                 replacements: { usuario },
-                type: db.QueryTypes.SELECT
+                type: dba.QueryTypes.SELECT
             });
         }
         res.json(productos); // Envía los productos encontrados al cliente

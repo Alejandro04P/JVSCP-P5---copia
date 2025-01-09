@@ -387,15 +387,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadProductosPorUsuario(selector, idUsuario) {
         const url = idUsuario === 'usuarioc' 
         ? `https://nodejs-production-0097.up.railway.app/productos` // Sin query string
-        : `https://nodejs-production-0097.up.railway.app/productos?usuario={encodeURIComponent(idUsuario)}`;
-        alert(idUsuario);
+        : `https://nodejs-production-0097.up.railway.app/productos?usuario=${encodeURIComponent(idUsuario)}`;
+      
+     
         fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
-            .then(response => response.json())
+        }).then(response => response.json())
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
