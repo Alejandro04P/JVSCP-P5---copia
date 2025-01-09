@@ -500,7 +500,7 @@ app.get('/usuarios', async (req, res) => {
 });
 app.get('/productos', async (req, res) => {
     const { usuario } = req.query; // Obtén el ID del usuario desde la query string
-
+    console.log(usuario);
     try {
      // Asegúrate de reemplazar esto con tu consulta real a la base de datos
         if(usuario === 'Todos'){
@@ -523,8 +523,6 @@ app.get('/productos', async (req, res) => {
                 type: db.QueryTypes.SELECT
             });
         }
-       
-
         res.json(productos); // Envía los productos encontrados al cliente
     } catch (error) {
         console.error('Error al obtener productos por usuario:', error);
