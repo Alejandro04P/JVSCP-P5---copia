@@ -573,9 +573,8 @@ app.get('/facturacli', async (req, res) => {
             facturas = await dbA.query(`
                 SELECT DISTINCT f.id_factura
                 FROM facturas f
-                JOIN usuarios u ON f.id_usuario = u.id_usuario
             `, {
-                replacements: { usuario },
+                replacements: { usuarioint },
                 type: QueryTypes.SELECT
             });
         }else{
