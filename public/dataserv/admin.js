@@ -397,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadClientesFacturas(selector,idUsuario){
-        alert(idUsuario);
         const url = idUsuario === 'usuarioc' 
         ? `https://nodejs-production-0097.up.railway.app/facturacli` // Sin query string
         : `https://nodejs-production-0097.up.railway.app/facturacli?usuario=${encodeURIComponent(idUsuario)}`;

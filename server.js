@@ -564,12 +564,10 @@ app.get('/productos/fac', async (req, res) => {
 });
 app.get('/facturacli', async (req, res) => {
     const { usuario } = req.query; // Obtén el ID del usuario desde la query string
-    console.log('Datos recibidos:', { usuario });
     const usuarioint = parseInt(usuario,10); // Convierte a número entero
     try {
      // Asegúrate de reemplazSar esto con tu consulta real a la base de datos 
      let facturas; 
-        console.log(usuario);
         if(!usuario){
             facturas = await dbA.query(`
                 SELECT f.id_factura 
@@ -589,7 +587,6 @@ app.get('/facturacli', async (req, res) => {
             });
         }
         res.json(facturas); // Envía los productos encontrados al cliente
-        console.log(facturas);
     } catch (error) {
         console.error('Error al obtener factura por usuario:', error);
         res.status(500).json({ error: 'Error al obtener factura' });
