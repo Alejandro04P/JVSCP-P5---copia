@@ -303,20 +303,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="factura" selected>Todos</option>
                         <option value="activa">Activa</option>
                         <option value="inactiva">Inactiva</option>
-                         <option value="pendiente">Pendiente</option>               
+                        <option value="pendiente">Pendiente</option>               
                     </select>
                     <label for="actualizarEstado">¿Desea actualizar el estado?</label>
                     <select id="actualizarEstado" class="crud-input" onchange="mostrarCampoActualizarEstado()">
                         <option value="no">No</option>
                         <option value="si">Sí</option>
                     </select>
-                    <div id="nuevoEstadoDiv" style="display: none;">
+                    <div id="nuevoEstadoDiv" style="display: none; display: flex; align-items: center; gap: 10px;">
                         <label for="nuevoEstado">Nuevo Estado:</label>
                         <select id="nuevoEstado" class="crud-input">
                             <option value="activa">Activa</option>
                             <option value="inactiva">Inactiva</option>
                             <option value="pendiente">Pendiente</option>
                         </select>
+                        <button id="btnActualizar" type="button" class="crud-button">Actualizar</button>
                     </div>
                     <button type="submit" class="crud-button">Consultar</button>
                 </form>
@@ -511,13 +512,14 @@ function handleAction(table, action, formData) {
         });
 }*/
 
-function mostrarCampoActualizarEstado() {
-    const actualizarEstado = document.getElementById('actualizarEstado').value;
-    const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
-    if (actualizarEstado === 'si') {
-        nuevoEstadoDiv.style.display = 'block';
-    } else {
-        nuevoEstadoDiv.style.display = 'none';
+    function mostrarCampoActualizarEstado() {
+        const actualizarEstado = document.getElementById('actualizarEstado').value;
+        const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
+        if (actualizarEstado === 'si') {
+            nuevoEstadoDiv.style.display = 'flex'; // Mostrar el div con "flex"
+        } else {
+            nuevoEstadoDiv.style.display = 'none'; // Ocultar el div
+        }
     }
-}
+
 
