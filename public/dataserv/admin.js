@@ -408,21 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error al cargar productos:', error));
     }
 
-    function loadProductos(selector) {
-        fetch('https://nodejs-production-0097.up.railway.app/productos')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.querySelector(selector);
-                if (select) {
-                    select.innerHTML = data.map(producto => 
-                        `<option value="${producto.id_producto}">(${producto.id_producto}) ${producto.pro_descripcion}-(${producto.pro_relleno})</option>`
-                    ).join('');
-                }
-            })
-            .catch(error => console.error('Error al cargar productos:', error));
-    }
-
-    function loadFacturas(selector) {
+    function loadFacturas(selector,tabla) {
         fetch('https://nodejs-production-0097.up.railway.app/facturas')
             .then(response => response.json())
             .then(data => {
@@ -430,8 +416,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (select) {
                     select.innerHTML = `<option value="dfactura" selected>Todos</option>` + data.map(factura => `<option value="${factura.id_factura}">${factura.id_factura}</option>`).join('');
                 }
+                    select.addEventListener('change', (event) => {
+                        const facturaseleccion = event.target.value;
+                        loadProductosPorFactura('#producto', facturaseleccion);
+                            //loadProductosPorClientesConFacturas('#producto'); 
+                    });
             })
-            .catch(error => console.error('Error al cargar facturas:', error));
+            .catch(error => console.error('Error al cargar usuarios:', error));
+    }
+    
+    function loadProductosPorFactura(selector, idFactura) {
+        const url = idFactura === 'dfactura' 
+        ? `https://nodejs-production-0097.up.railway.app/productos/fac` // Sin query string
+        : `https://nodejs-production-0097.up.railway.app/productos/fac?usuario=${encodeURIComponent(idFactura)}`;
+      
+     
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => response.json())
+            .then(data => {
+                const select = document.querySelector(selector);
+                if (select) {
+                    select.innerHTML = 
+                        data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
     }
 
 /*    function handleAction(table, action, formData) {

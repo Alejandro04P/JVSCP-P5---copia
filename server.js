@@ -531,6 +531,39 @@ app.get('/productos', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener productos' });
     }
 });
+app.get('/productos/fac', async (req, res) => {
+    const { factura } = req.query; // Obtén el ID del usuario desde la query string
+    console.log('Datos recibidos:', { factura });
+    try {
+     // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
+     let productos; 
+        if(!factura){
+           
+            productos = await dbA.query(`
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
+                FROM proxfac pf
+                JOIN productos p ON c.id_producto = p.id_producto
+            `, {
+                replacements: { factura },
+                type: QueryTypes.SELECT
+            });
+        }else{
+            productos = await dbA.query(`
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
+                FROM proxfac pf
+                JOIN productos p ON c.id_producto = p.id_producto
+                WHERE pf.id_factura = :factura
+            `, {
+                replacements: { factura },
+                type: QueryTypes.SELECT
+            });
+        }
+        res.json(productos); // Envía los productos encontrados al cliente
+    } catch (error) {
+        console.error('Error al obtener productos por usuario:', error);
+        res.status(500).json({ error: 'Error al obtener productos' });
+    }
+});
 
 
 
