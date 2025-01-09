@@ -512,7 +512,7 @@ app.get('/productos', async (req, res) => {
                 JOIN productos p ON c.id_producto = p.id_producto
             `, {
                 replacements: { usuario },
-                type: dba.QueryTypes.SELECT
+                type: QueryTypes.SELECT
             });
         }else{
             productos = await dba.query(`
@@ -522,7 +522,7 @@ app.get('/productos', async (req, res) => {
                 WHERE c.id_usuario = :usuario
             `, {
                 replacements: { usuario },
-                type: dba.QueryTypes.SELECT
+                type: QueryTypes.SELECT
             });
         }
         res.json(productos); // Envía los productos encontrados al cliente
