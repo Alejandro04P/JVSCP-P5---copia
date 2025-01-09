@@ -506,7 +506,7 @@ app.get('/productos', async (req, res) => {
      let productos; 
         if(!usuario){
            
-            productos = await dba.query(`
+            productos = await dbA.query(`
                 SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
@@ -515,7 +515,7 @@ app.get('/productos', async (req, res) => {
                 type: QueryTypes.SELECT
             });
         }else{
-            productos = await dba.query(`
+            productos = await dbA.query(`
                 SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
