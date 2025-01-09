@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadProductosPorFactura(selector, idFactura) {
         const url = idFactura === 'dfactura' 
         ? `https://nodejs-production-0097.up.railway.app/productos/fac` // Sin query string
-        : `https://nodejs-production-0097.up.railway.app/productos/factura?=${encodeURIComponent(idFactura)}`;
+        : `https://nodejs-production-0097.up.railway.app/productos/fac?factura=${encodeURIComponent(idFactura)}`;
       
      
         fetch(url, {
