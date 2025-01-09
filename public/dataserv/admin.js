@@ -385,13 +385,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProductosPorUsuario(selector, idUsuario) {
+        const url = idUsuario === 'usuarioc' 
+        ? `https://nodejs-production-0097.up.railway.app/productos` // Sin query string
+        : `https://nodejs-production-0097.up.railway.app/productos?usuario={encodeURIComponent(idUsuario)}`;
         alert(idUsuario);
-        fetch(`https://nodejs-production-0097.up.railway.app/productos?usuario=${idUsuario}`)
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
             .then(response => response.json())
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = `<option value="todos" selected>Todos los productos</option>` + 
+                    select.innerHTML = 
                         data.map(producto => `<option value="${producto.id_producto}">${producto.nombre}</option>`).join('');
                 }
             })

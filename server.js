@@ -500,10 +500,10 @@ app.get('/usuarios', async (req, res) => {
 });
 app.get('/productos', async (req, res) => {
     const { usuario } = req.query; // Obtén el ID del usuario desde la query string
-    console.log(usuario);
+    console.log('Datos recibidos:', { user });
     try {
-     // Asegúrate de reemplazar esto con tu consulta real a la base de datos
-        if(usuario === 'Todos'){
+     // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
+        if(!usuario){
             const productos = await db.query(`
                 SELECT DISTINCT c.id_producto, p.nombre, c.cantidad, c.valor_unitario
                 FROM carrito c
