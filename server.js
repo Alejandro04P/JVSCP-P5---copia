@@ -567,8 +567,9 @@ app.get('/facturacli', async (req, res) => {
     console.log('Datos recibidos:', { usuario });
     try {
      // Asegúrate de reemplazSar esto con tu consulta real a la base de datos
+     const usuarioint = parseInt(usuario,10); // Convierte a número entero
      let facturas; 
-        if(!usuario){
+        if(!usuarioint){
             facturas = await dbA.query(`
                 SELECT DISTINCT f.id_factura
                 FROM facturas f
@@ -582,9 +583,9 @@ app.get('/facturacli', async (req, res) => {
                 SELECT DISTINCT f.id_factura
                 FROM facturas f
                 JOIN usuarios u ON f.id_usuario = u.id_usuario
-                WHERE f.id_usuario = :usuario
+                WHERE f.id_usuario = :usuarioint
             `, {
-                replacements: { usuario },
+                replacements: { usuarioint },
                 type: QueryTypes.SELECT
             });
         }
