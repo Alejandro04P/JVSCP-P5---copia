@@ -352,8 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 handleAction(selectedTable, action, new FormData(form));
             });
-
-
+            const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
+            nuevoEstadoDiv.style.display = 'none'; // Asegura que esté oculto inicialmente
             if (action === 'select') {
                 if (selectedTable === 'carrito') {
                     loadUsuarios('#usuario',selectedTable);
