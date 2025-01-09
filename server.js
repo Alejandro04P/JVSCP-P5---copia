@@ -540,7 +540,7 @@ app.get('/productos/fac', async (req, res) => {
         if(!factura){
            
             productos = await dbA.query(`
-                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor
                 FROM proxfac pf
                 JOIN productos p ON pf.id_producto = p.id_producto
             `, {
@@ -549,7 +549,7 @@ app.get('/productos/fac', async (req, res) => {
             });
         }else{
             productos = await dbA.query(`
-                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.cantidad, pf.valor_unitario
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor
                 FROM proxfac pf
                 JOIN productos p ON pf.id_producto = p.id_producto
                 WHERE pf.id_factura = :factura
