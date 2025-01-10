@@ -575,11 +575,6 @@ function handleAction(table, action, formData) {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
-                    alert('Estado de la factura actualizado correctamente.');
-                } else {
-                    alert('Error al actualizar: ' + data.message);
-                }
             })
             .catch((error) => {
                 console.error('Error al actualizar:', error);
