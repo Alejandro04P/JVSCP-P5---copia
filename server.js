@@ -621,13 +621,13 @@ app.put('/estadofac', async (req, res) => {
         if (!usuario.length) {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
         }
-
+        factura = factura.trim();
         const id_usuario = usuario1[0].id_usuario;
         const [result] = await dbA.query(
             `
             UPDATE facturas
             SET estado_fac =  :estado -- Cambiar esto según tu lógica
-            WHERE id_usuario = :id_usuario AND id_factura = :factura
+            WHERE id_usuario = :id_usuario AND TRIM(id_factura) = :factura
             `,
             {
                 replacements: { estado,id_usuario, factura},
