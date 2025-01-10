@@ -628,8 +628,9 @@ app.put('/estadofac', async (req, res) => {
         const [result] = await dbA.query(
             `
             UPDATE facturas
-            SET estado_fac =  :estado -- Cambiar esto según tu lógica
+            SET estado_fac = :estado
             WHERE id_usuario = :id_usuario AND TRIM(id_factura) = :factura
+            RETURNING *
             `,
             {
                 replacements: { estado,id_usuario, factura},
