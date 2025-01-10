@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <option value="inactiva">Inactiva</option>
                             <option value="pendiente">Pendiente</option>
                         </select>
-                        <button id="btnActualizar" type="button" class="crud-button" onclick="actualizarEstadoFac('#nuevoEstado','#facturas')">Actualizar</button>
+                        <button id="btnActualizar" type="button" class="crud-button" onclick="actualizarEstadoFac('#nuevoEstado','#facturas','#usuario')">Actualizar</button>
                     </div>
                     <button type="submit" class="crud-button">Consultar</button>
                 </form>
@@ -542,12 +542,14 @@ function handleAction(table, action, formData) {
             alert('Hubo un error al realizar la consulta');
         });
 }*/
-    function actualizarEstadoFac(selectuser, selectfac) {
+    function actualizarEstadoFac(selecest, selectfac,selectuser) {
         const url = `https://nodejs-production-0097.up.railway.app/estadofac`;
 
         // Obtén los elementos select
         const selectU = document.querySelector(selectuser);
         const selectF = document.querySelector(selectfac);
+        const selectE = document.querySelector(selecest);
+
 
         if (!selectU || !selectF) {
             console.error('No se encontraron los elementos select.');
@@ -557,6 +559,7 @@ function handleAction(table, action, formData) {
         //Obtener el texto del <option> seleccionado (si es necesario)
         const usuarioTexto = selectU.options[selectU.selectedIndex].text;
         const facturaTexto = selectF.options[selectF.selectedIndex].text;
+        const estadoTexto = selectE.options[selectE.selectedIndex].text;
 
         // Enviar datos al servidor
         fetch(url, {
@@ -565,8 +568,9 @@ function handleAction(table, action, formData) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                usuario: usuarioSeleccionado,
-                factura: facturaSeleccionada,
+                usuario: usuarioTexto,
+                factura: facturaTexto,
+                estado: estadoTexto,
             }),
         })
             .then((response) => response.json())

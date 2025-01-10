@@ -594,7 +594,7 @@ app.get('/facturacli', async (req, res) => {
 });
 
 app.put('/estadofac', async (req, res) => {
-    const { usuario, factura } = req.body; // Datos enviados desde el cliente
+    let { usuario, factura,estado } = req.body; // Datos enviados desde el cliente
 
     // Validación de datos
     if (!usuario || !factura) {
@@ -603,14 +603,21 @@ app.put('/estadofac', async (req, res) => {
 
     try {
         // Lógica de actualización en la base de datos
+        if(estado === 'Activa'){
+            estado = 'ACT';
+        }else if (estado === 'Inactiva'){
+            estado = 'INA';
+        }else{
+             estado = 'PEN';
+        }
         const [result] = await dbA.query(
             `
             UPDATE facturas
-            SET estado = 'actualizado' -- Cambiar esto según tu lógica
+            SET estado_fac =  :estado -- Cambiar esto según tu lógica
             WHERE id_usuario = :usuario AND id_factura = :factura
             `,
             {
-                replacements: { usuario, factura },
+                replacements: { estado,usuario, factura},
                 type: QueryTypes.UPDATE,
             }
         );
