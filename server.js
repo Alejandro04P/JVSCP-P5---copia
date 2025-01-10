@@ -622,8 +622,9 @@ app.put('/estadofac', async (req, res) => {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
         }
         factura = factura.trim();
-        console.log(factura,id_usuario,estado);
+      
         const id_usuario = usuario1[0].id_usuario;
+        console.log(factura,id_usuario,estado);
         const [result] = await dbA.query(
             `
             UPDATE facturas
