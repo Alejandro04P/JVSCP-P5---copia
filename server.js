@@ -593,6 +593,41 @@ app.get('/facturacli', async (req, res) => {
     }
 });
 
+app.put('/estadofac', async (req, res) => {
+    const { usuario, factura } = req.body; // Datos enviados desde el cliente
+
+    // Validación de datos
+    if (!usuario || !factura) {
+        return res.status(400).json({ success: false, message: 'Usuario y factura son requeridos.' });
+    }
+
+    try {
+        // Lógica de actualización en la base de datos
+        const [result] = await dbA.query(
+            `
+            UPDATE facturas
+            SET estado = 'actualizado' -- Cambiar esto según tu lógica
+            WHERE id_usuario = :usuario AND id_factura = :factura
+            `,
+            {
+                replacements: { usuario, factura },
+                type: QueryTypes.UPDATE,
+            }
+        );
+
+        // Verifica si se actualizaron registros
+        if (result > 0) {
+            res.json({ success: true, message: 'Factura actualizada correctamente.' });
+        } else {
+            res.status(404).json({ success: false, message: 'Factura no encontrada.' });
+        }
+    } catch (error) {
+        console.error('Error al actualizar factura:', error);
+        res.status(500).json({ success: false, message: 'Error interno del servidor.' });
+    }
+});
+
+
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');

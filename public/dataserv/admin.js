@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <option value="inactiva">Inactiva</option>
                             <option value="pendiente">Pendiente</option>
                         </select>
-                        <button id="btnActualizar" type="button" class="crud-button" onclick="actualizarEstadoFac(#nuevoEstado)">Actualizar</button>
+                        <button id="btnActualizar" type="button" class="crud-button" onclick="actualizarEstadoFac('#nuevoEstado','#facturas')">Actualizar</button>
                     </div>
                     <button type="submit" class="crud-button">Consultar</button>
                 </form>
@@ -542,32 +542,47 @@ function handleAction(table, action, formData) {
             alert('Hubo un error al realizar la consulta');
         });
 }*/
-    function actualizarEstadoFac(selector){
+    function actualizarEstadoFac(selectuser, selectfac) {
         const url = `https://nodejs-production-0097.up.railway.app/estadofac`;
-        const select = document.querySelector(selector);
-        select.addEventListener('change', (event) => {
-            const estadoSeleccionado = event.target.value;  
-            fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({estadoSeleccionado}),
+
+        // Obtén los elementos select
+        const selectU = document.querySelector(selectuser);
+        const selectF = document.querySelector(selectfac);
+
+        if (!selectU || !selectF) {
+            console.error('No se encontraron los elementos select.');
+            return;
+        }
+
+        //Obtener el texto del <option> seleccionado (si es necesario)
+        const usuarioTexto = selectU.options[selectU.selectedIndex].text;
+        const facturaTexto = selectF.options[selectF.selectedIndex].text;
+
+        // Enviar datos al servidor
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                usuario: usuarioSeleccionado,
+                factura: facturaSeleccionada,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert('Estado de la factura actualizado correctamente.');
+                } else {
+                    alert('Error al actualizar: ' + data.message);
+                }
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        alert("Factura actualizada");
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('Ocurrió un error al añadir al carrito');
-                });
-        });
+            .catch((error) => {
+                console.error('Error al actualizar:', error);
+                alert('Ocurrió un error al actualizar la factura.');
+            });
     }
+
     function mostrarCampoActualizarEstado() {
         const actualizarEstado = document.getElementById('actualizarEstado').value;
         const nuevoEstadoDiv = document.getElementById('nuevoEstadoDiv');
