@@ -627,10 +627,10 @@ app.put('/estadofac', async (req, res) => {
             `
             UPDATE facturas
             SET estado_fac =  :estado -- Cambiar esto según tu lógica
-            WHERE id_usuario = :usuario AND id_factura = :factura
+            WHERE id_usuario = :id_usuario AND id_factura = :factura
             `,
             {
-                replacements: { estado,usuario, factura},
+                replacements: { estado,id_usuario, factura},
                 type: QueryTypes.UPDATE,
             }
         );
