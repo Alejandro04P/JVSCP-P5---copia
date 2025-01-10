@@ -625,7 +625,7 @@ app.put('/estadofac', async (req, res) => {
       
         const id_usuario = usuario1[0].id_usuario;
         console.log(factura,id_usuario,estado);
-        const [result] = await dbA.query(
+        await dbA.query(
             `
             UPDATE facturas
             SET estado_fac = :estado
@@ -637,13 +637,9 @@ app.put('/estadofac', async (req, res) => {
                 type: QueryTypes.UPDATE,
             }
         );
-
+        return res.json({ success: true, message: 'Factura actualizada correctamente' });
         // Verifica si se actualizaron registros
-        if (result > 0) {
-            res.json({ success: true, message: 'Factura actualizada correctamente.' });
-        } else {
-            res.status(404).json({ success: false, message: 'Factura no encontrada.' });
-        }
+       
     } catch (error) {
         console.error('Error al actualizar factura:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor.' });
