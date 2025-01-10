@@ -595,7 +595,7 @@ app.get('/facturacli', async (req, res) => {
 
 app.put('/estadofac', async (req, res) => {
     let { usuario, factura,estado } = req.body; // Datos enviados desde el cliente
-
+    
     // Validación de datos
     if (!usuario || !factura) {
         return res.status(400).json({ success: false, message: 'Usuario y factura son requeridos.' });
@@ -622,6 +622,7 @@ app.put('/estadofac', async (req, res) => {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
         }
         factura = factura.trim();
+        console.log(factura,id_usuario,estado);
         const id_usuario = usuario1[0].id_usuario;
         const [result] = await dbA.query(
             `
