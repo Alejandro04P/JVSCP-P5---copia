@@ -610,6 +610,19 @@ app.put('/estadofac', async (req, res) => {
         }else{
              estado = 'PEN';
         }
+        const usuario1 = await dbA.query(
+            'SELECT id_usuario FROM usuarios WHERE username = :usuario',
+            {
+                type: QueryTypes.SELECT,
+                replacements: { usuario }
+            }
+        );
+
+        if (!usuario.length) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const id_usuario = usuario1[0].id_usuario;
         const [result] = await dbA.query(
             `
             UPDATE facturas
