@@ -698,7 +698,7 @@ app.get('/:table/select', async (req, res) => {
         let query = '';
         const replacements = {};
         let id_usuario = '';
-
+        let id_producto = '';
         // Si se filtra por usuario, obtener el id_usuario
         if (usuario !== 'Todos') {
             const usuarioData = await dbA.query(
