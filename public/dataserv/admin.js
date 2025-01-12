@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formDataObject = {};
 
       // Iterar por los elementos del formulario
-      for (const element of form.elements) {
+      for (const element of formData.elements) {
           if (element.tagName === 'SELECT') {
               // Tomar el texto del option seleccionado
               const selectedText = element.options[element.selectedIndex]?.text;
