@@ -111,13 +111,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
       // Recorrer el FormData y construir un string con sus claves y valores
-      let formDataContent = 'Contenido del Formulario:\n';
-      for (const [key, value] of formData.entries()) {
-          formDataContent += `${key}: ${value}\n`;
+      const formDataObject = {};
+
+      // Iterar por los elementos del formulario
+      for (const element of form.elements) {
+          if (element.tagName === 'SELECT') {
+              // Tomar el texto del option seleccionado
+              const selectedText = element.options[element.selectedIndex]?.text;
+              formDataObject[element.id] = selectedText;
+          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+              // Para inputs y textareas, usar su valor
+              formDataObject[element.id] = element.value;
+          }
       }
   
-      // Mostrar el contenido del FormData en un alert
-      alert(formDataContent);
+      // Mostrar los datos en un alert
+      alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
+  
     // Construir la URL con parámetros de consulta
     const queryParams = new URLSearchParams(formData).toString();
 
