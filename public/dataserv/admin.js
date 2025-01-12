@@ -113,19 +113,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const formDataObject = {};
-    
-        // Recorrer los pares clave-valor de FormData
-        for (const [key, value] of formData.entries()) {
-            formDataObject[key] = value;
+        const formElements = formData.form.elements;
+        let message = 'Datos del formulario:\n';
+
+        for (let element of formElements) {
+            if (element.tagName === 'SELECT') {
+                // Obtener el texto del <option> seleccionado
+                const selectedText = element.options[element.selectedIndex].text;
+                message += `Campo: ${element.id}, Texto: ${selectedText}\n`;
+            } else {
+                // Usar el valor para otros tipos de campos
+                message += `Campo: ${element.id}, Valor: ${element.value}\n`;
+            }
         }
-    
-        // Mostrar las claves y valores en un alert
-        let alertMessage = "Datos del Formulario:\n";
-        for (const [key, value] of Object.entries(formDataObject)) {
-            alertMessage += `${key}: ${value}\n`;
-        }
-        alert(alertMessage);
+
+        // Mostrar en un alert para depuración
+        alert(message);
+
     
         // Construir los parámetros de consulta a partir de formDataObject
         const queryParams = new URLSearchParams(formDataObject).toString();
