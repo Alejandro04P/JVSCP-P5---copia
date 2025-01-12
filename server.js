@@ -677,7 +677,14 @@ app.get('/estados/factura', async (req, res) => {
 // Endpoint genérico para manejar las consultas
 app.get('/:table/select', async (req, res) => {
     const { table } = req.params; // Obtener la tabla desde la URL
-    const queryParams = req.query; // Obtener los parámetros de consulta
+    let { usuario, factura, fecha, estado, producto } = req.query; // Obtener los parámetros de consulta
+
+    // Limpiar los parámetros de consulta
+    usuario = usuario?.trim();
+    factura = factura?.trim();
+    fecha = fecha?.trim();
+    estado = estado?.trim();
+    producto = producto?.trim();
 
     // Verificar que la tabla sea válida
     const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
@@ -698,19 +705,16 @@ app.get('/:table/select', async (req, res) => {
                 INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
                 INNER JOIN productos p ON c.id_producto = p.id_producto
             `;
-            if (queryParams.usuario) {
+            if (usuario) {
                 query += ' WHERE u.id_usuario = :usuario';
-                replacements.usuario = queryParams.usuario;
+                replacements.usuario = usuario;
             }
-            if (queryParams.producto) {
-                query += queryParams.usuario ? ' AND' : ' WHERE';
+            if (producto) {
+                query += usuario ? ' AND' : ' WHERE';
                 query += ' p.id_producto = :producto';
-                replacements.producto = queryParams.producto;
+                replacements.producto = producto;
             }
-          
         } else if (table === 'factura') {
-            const { usuario, factura, fecha, estado } = queryParams; // Extraer parámetros
-
             query = `
                 SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, f.fac_fechahora, 
                        f.fac_subtotal, f.fac_iva, f.fac_total, f.estado_fac
@@ -748,19 +752,19 @@ app.get('/:table/select', async (req, res) => {
                 INNER JOIN productos p ON pf.id_producto = p.id_producto
                 INNER JOIN facturas f ON pf.id_factura = f.id_factura
             `;
-            if (queryParams.factura) {
+            if (factura) {
                 query += ' WHERE f.id_factura = :factura';
-                replacements.factura = queryParams.factura;
+                replacements.factura = factura;
             }
-            if (queryParams.producto) {
-                query += queryParams.factura ? ' AND' : ' WHERE';
+            if (producto) {
+                query += factura ? ' AND' : ' WHERE';
                 query += ' p.id_producto = :producto';
-                replacements.producto = queryParams.producto;
+                replacements.producto = producto;
             }
-            if (queryParams.estado) {
-                query += queryParams.factura || queryParams.producto ? ' AND' : ' WHERE';
+            if (estado) {
+                query += factura || producto ? ' AND' : ' WHERE';
                 query += ' pf.estado_pxf = :estado';
-                replacements.estado = queryParams.estado;
+                replacements.estado = estado;
             }
         }
 
@@ -769,15 +773,17 @@ app.get('/:table/select', async (req, res) => {
             replacements,
             type: QueryTypes.SELECT,
         });
-        console.log(query);
-        console.log(resultados);
-        // Enviar los resultados al cliente
-        res.json(resultados);
+
+        console.log(query); // Log de la consulta generada
+        console.log(replacements); // Log de los valores de reemplazo
+        console.log(resultados); // Log de los resultados
+        res.json(resultados); // Enviar los resultados al cliente
     } catch (error) {
         console.error('Error al realizar la consulta:', error);
         res.status(500).json({ error: 'Error al realizar la consulta.' });
     }
 });
+
 
 
 app.get('/', (req, res) => {
