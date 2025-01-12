@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const form = formContainer.querySelector('form');
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
+                alert(form.elements); // Muestra los elementos del formulario
+
                 handleAction(selectedTable, action, new FormData(form));
             });
         
