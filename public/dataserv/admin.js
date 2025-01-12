@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Construir la URL con parámetros de consulta
     const queryParams = new URLSearchParams(formData).toString();
+    alert(queryParams);
     const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
 
     // Realizar la solicitud GET
