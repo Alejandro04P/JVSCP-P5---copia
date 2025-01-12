@@ -452,7 +452,6 @@ app.post('/factura', async (req, res) => {
 });
 app.post('/validarUsuario', async (req, res) => {
     const { username, password } = req.body;
-
     try {
     
         // Verificar conexión a la base de datos
@@ -646,11 +645,47 @@ app.put('/estadofac', async (req, res) => {
     }
 });
 
+app.get('/estados/factura', async (req, res) => {
+    const { factura } = req.query; // Obtener la factura desde la query string
+
+    try {
+        // Validar que se haya enviado un ID de factura
+        if (!factura) {
+            return res.status(400).json({ error: 'El ID de la factura es obligatorio.' });
+        }
+
+        // Buscar el estado de la factura en la base de datos
+        const estadoFactura = await dbA.query(`
+            SELECT DISTINCT f.ESTADO_FAC 
+            FROM FACTURAS f
+            WHERE f.id_Factura = :factura
+        `, {
+            replacements: { factura },
+            type: QueryTypes.SELECT
+        });
+
+        if (!estadoFactura || estadoFactura.length === 0) {
+            return res.status(404).json({ error: 'No se encontró la factura especificada.' });
+        }
+
+        // Formatear la respuesta como un arreglo de objetos con value y label
+        const estados = estadoFactura.map(estado => ({
+            value: estado.ESTADO_FAC,
+            label: estado.ESTADO_FAC
+        }));
+
+        res.json(estados); // Enviar los estados al cliente
+    } catch (error) {
+        console.error('Error al obtener estados por factura:', error);
+        res.status(500).json({ error: 'Ocurrió un error al obtener los estados de la factura.' });
+    }
+});
 
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
+
 // Ruta para obtener ID de facturas
 
 

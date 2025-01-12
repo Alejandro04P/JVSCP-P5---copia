@@ -409,9 +409,18 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = 
+                    select.innerHTML = `<option value = "clifac" selected>Todos</option>` +
                         data.map(facturas => `<option value="${facturas.id_factura}">${facturas.id_factura}</option>`).join('');
                 }
+
+                select.addEventListener('change', (event) => {
+                    const facturaSeleccionada = event.target.value;
+                    if (facturaSeleccionada === 'clifac') {
+                        restaurarEstadoEstatico('#filtroEstado'); // Restaurar opciones estáticas
+                    } else {
+                        cargarEstadosPorFactura('#filtroEstado', facturaSeleccionada); // Cargar estados dinámicos
+                    }
+                });
             })
         .catch(error => console.error('Error al cargar factura:', error));
       
@@ -431,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = 
+                    select.innerHTML =   `<option value = "userpro" selected>Todos</option>` +
                         data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
                 }
             })
@@ -590,6 +599,32 @@ function handleAction(table, action, formData) {
         } else {
             nuevoEstadoDiv.style.display = 'none'; // Ocultar el div
         }
+    }
+
+    function restaurarEstadoEstatico(selector) {
+        const selectEstado = document.querySelector(selector);
+        if (selectEstado) {
+            selectEstado.disabled = false;
+            selectEstado.innerHTML = `
+                <option value="factura" selected>Todos</option>
+                <option value="activa">Activa</option>
+                <option value="inactiva">Inactiva</option>
+                <option value="pendiente">Pendiente</option>`;
+        }
+    }
+    
+    function cargarEstadosPorFactura(selector, idFactura) {
+        const url = `https://nodejs-production-0097.up.railway.app/estados/factura?factura=${encodeURIComponent(idFactura)}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const selectEstado = document.querySelector(selector);
+                if (selectEstado) {
+                    selectEstado.disabled = false;
+                    selectEstado.innerHTML = data.map(estado => `<option value="${estado.estado_fac}">${estado.estado_fac}</option>`).join('');
+                }
+            })
+            .catch(error => console.error('Error al cargar estados por factura:', error));
     }
 
 
