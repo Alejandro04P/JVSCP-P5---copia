@@ -783,6 +783,7 @@ app.get('/:table/select', async (req, res) => {
                 query += ' WHERE ' + conditions.join(' AND ');
             }
         }  else if (table === 'detalleFactura') {
+            facturas = idFacturaFiltro;
             query = `
                 SELECT pf.id_factura, pf.id_producto, p.pro_descripcion AS producto, 
                        pf.pxf_cantidad, pf.pxf_valor, pf.estado_pxf
