@@ -674,6 +674,84 @@ app.get('/estados/factura', async (req, res) => {
         res.status(500).json({ error: 'Ocurrió un error al obtener los estados de la factura.' });
     }
 });
+// Endpoint genérico para manejar las consultas
+app.get('/:table/select', async (req, res) => {
+    const { table } = req.params; // Obtener la tabla desde la URL
+    const queryParams = req.query; // Obtener los parámetros de consulta
+
+    // Verificar que la tabla sea válida
+    const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
+    if (!tablasPermitidas.includes(table)) {
+        return res.status(400).json({ error: 'Tabla no permitida.' });
+    }
+
+    try {
+        let query = '';
+        const replacements = {};
+
+        // Construir consultas dinámicas dependiendo de la tabla
+        if (table === 'carrito') {
+            query = `
+                SELECT c.id_carrito, u.username AS usuario, p.nombre AS producto, c.cantidad
+                FROM carrito c
+                INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
+                INNER JOIN productos p ON c.id_producto = p.id_producto
+            `;
+            if (queryParams.usuario) {
+                query += ' WHERE u.id_usuario = :usuario';
+                replacements.usuario = queryParams.usuario;
+            }
+            if (queryParams.producto) {
+                query += queryParams.usuario ? ' AND' : ' WHERE';
+                query += ' p.id_producto = :producto';
+                replacements.producto = queryParams.producto;
+            }
+        } else if (table === 'factura') {
+            query = `
+                SELECT f.id_factura, f.fecha, f.estado, u.username AS usuario
+                FROM facturas f
+                INNER JOIN usuarios u ON f.id_usuario = u.id_usuario
+            `;
+            if (queryParams.usuario) {
+                query += ' WHERE u.id_usuario = :usuario';
+                replacements.usuario = queryParams.usuario;
+            }
+            if (queryParams.estado) {
+                query += queryParams.usuario ? ' AND' : ' WHERE';
+                query += ' f.estado = :estado';
+                replacements.estado = queryParams.estado;
+            }
+        } else if (table === 'detalleFactura') {
+            query = `
+                SELECT df.id_detalle, df.cantidad, p.nombre AS producto, f.id_factura
+                FROM detalles_factura df
+                INNER JOIN productos p ON df.id_producto = p.id_producto
+                INNER JOIN facturas f ON df.id_factura = f.id_factura
+            `;
+            if (queryParams.factura) {
+                query += ' WHERE f.id_factura = :factura';
+                replacements.factura = queryParams.factura;
+            }
+            if (queryParams.producto) {
+                query += queryParams.factura ? ' AND' : ' WHERE';
+                query += ' p.id_producto = :producto';
+                replacements.producto = queryParams.producto;
+            }
+        }
+
+        // Ejecutar la consulta dinámica
+        const resultados = await db.query(query, {
+            replacements,
+            type: QueryTypes.SELECT
+        });
+
+        // Enviar los resultados al cliente
+        res.json(resultados);
+    } catch (error) {
+        console.error('Error al realizar la consulta:', error);
+        res.status(500).json({ error: 'Error al realizar la consulta.' });
+    }
+});
 
 
 app.get('/', (req, res) => {
