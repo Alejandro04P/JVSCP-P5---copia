@@ -677,7 +677,7 @@ app.get('/estados/factura', async (req, res) => {
 // Endpoint genérico para manejar las consultas
 app.get('/:table/select', async (req, res) => {
     const { table } = req.params; // Obtener la tabla desde la URL
-    let { usuario, facturas, filtroEstado, filtroFecha, producto } = req.query; // Obtener los parámetros de consulta
+    let { usuario, facturas, filtroEstado, filtroFecha, producto, idFacturaFiltro} = req.query; // Obtener los parámetros de consulta
 
     // Limpiar los parámetros de consulta
     usuario = usuario?.trim();
@@ -685,8 +685,9 @@ app.get('/:table/select', async (req, res) => {
     filtroFecha = filtroFecha?.trim();
     filtroEstado = filtroEstado?.trim();
     producto = producto?.trim();
+    idFacturaFiltro = idFacturaFiltro?.trim();
 
-    console.log('Datos: ', { usuario, facturas, filtroFecha, filtroEstado, producto, table });
+    console.log('Datos: ', { usuario, facturas, filtroFecha, filtroEstado, producto, table,idFacturaFiltro });
 
     // Verificar que la tabla sea válida
     const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
@@ -750,6 +751,7 @@ app.get('/:table/select', async (req, res) => {
                 replacements.producto = id_producto;
             }
         } else if (table === 'factura') {
+            facturas 
             query = `
                 SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, 
                        TO_CHAR(f.fac_fechahora, 'YYYY-MM-DD') AS fac_fecha, 
@@ -788,7 +790,7 @@ app.get('/:table/select', async (req, res) => {
                 INNER JOIN productos p ON pf.id_producto = p.id_producto
                 INNER JOIN facturas f ON pf.id_factura = f.id_factura
             `;
-            if (facturas) {
+            if (facturas && facturas !== 'Todos') {
                 query += ' WHERE TRIM(f.id_factura) = :facturas';
                 replacements.facturas = facturas;
             }
@@ -796,11 +798,6 @@ app.get('/:table/select', async (req, res) => {
                 query += facturas ? ' AND' : ' WHERE';
                 query += ' p.id_producto = :producto';
                 replacements.producto = id_producto;
-            }
-            if (filtroEstado) {
-                query += facturas || producto ? ' AND' : ' WHERE';
-                query += ' pf.estado_pxf = :filtroEstado';
-                replacements.filtroEstado = filtroEstado;
             }
         }
         // Ejecutar la consulta dinámica
