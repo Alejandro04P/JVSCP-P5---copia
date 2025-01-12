@@ -753,11 +753,11 @@ app.get('/:table/select', async (req, res) => {
         } else if (table === 'factura') {
           // Lógica de actualización en la base de datos
             if(filtroEstado === 'Activa'){
-                estado = 'ACT';
+                filtroEstado = 'ACT';
             }else if (filtroEstado === 'Inactiva'){
-                estado = 'INA';
+                filtroEstado = 'INA';
             }else{
-                estado = 'PEN';
+                filtroEstado = 'PEN';
             }
             query = `
                 SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, 
