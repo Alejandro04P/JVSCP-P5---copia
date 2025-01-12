@@ -713,7 +713,7 @@ app.get('/:table/select', async (req, res) => {
             id_usuario = usuarioData[0]?.id_usuario || '';
         }
 
-        if (producto.includes("Relleno:")) {
+        if (producto && producto.includes("Relleno:")) {
             [nombreProducto, rellenoProducto] = producto.split("Relleno:").map(s => s.trim());
 
             const productoData = await dbA.query(
