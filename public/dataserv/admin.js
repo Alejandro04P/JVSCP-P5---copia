@@ -110,26 +110,20 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Solo se permiten consultas.');
             return;
         }
-    
-        // Crear un objeto para almacenar los datos del formulario
-       // Crear un objeto para almacenar los datos del formulario
+
         const formDataObject = {};
-
-        // Convertir form.elements a un array para iterar
-        Array.from(form.elements).forEach((element) => {
-            if (element.tagName === 'SELECT') {
-                // Tomar el texto del option seleccionado
-                const selectedText = element.options[element.selectedIndex]?.text.trim();
-                formDataObject[element.id] = selectedText;
-            } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                // Para inputs y textareas, usar su valor
-                formDataObject[element.id] = element.value.trim();
-            }
-        });
-
-        // Mostrar los datos en un alert para depuración
-        alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
-
+    
+        // Recorrer los pares clave-valor de FormData
+        for (const [key, value] of formData.entries()) {
+            formDataObject[key] = value;
+        }
+    
+        // Mostrar las claves y valores en un alert
+        let alertMessage = "Datos del Formulario:\n";
+        for (const [key, value] of Object.entries(formDataObject)) {
+            alertMessage += `${key}: ${value}\n`;
+        }
+        alert(alertMessage);
     
         // Construir los parámetros de consulta a partir de formDataObject
         const queryParams = new URLSearchParams(formDataObject).toString();
