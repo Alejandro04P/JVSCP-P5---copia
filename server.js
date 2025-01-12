@@ -692,7 +692,8 @@ app.get('/:table/select', async (req, res) => {
         // Construir consultas dinámicas dependiendo de la tabla
         if (table === 'carrito') {
             query = `
-                SELECT c.id_carrito, u.username AS usuario, p.nombre AS producto, c.cantidad
+                SELECT c.id_carrito, u.username AS usuario, p.nombre AS producto, c.cantidad, 
+                       c.valor_unitario, c.estado_carrito, c.fecha_agregado
                 FROM carrito c
                 INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
                 INNER JOIN productos p ON c.id_producto = p.id_producto
@@ -707,26 +708,44 @@ app.get('/:table/select', async (req, res) => {
                 replacements.producto = queryParams.producto;
             }
         } else if (table === 'factura') {
+            const { usuario, factura, fecha, estado } = queryParams; // Extraer parámetros
+
             query = `
-                SELECT f.id_factura, f.fecha, f.estado, u.username AS usuario
+                SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, f.fac_fechahora, 
+                       f.fac_subtotal, f.fac_iva, f.fac_total, f.estado_fac
                 FROM facturas f
                 INNER JOIN usuarios u ON f.id_usuario = u.id_usuario
             `;
-            if (queryParams.usuario) {
-                query += ' WHERE u.id_usuario = :usuario';
-                replacements.usuario = queryParams.usuario;
+
+            const conditions = [];
+            if (usuario && usuario !== 'Todos') {
+                conditions.push('u.id_usuario = :usuario');
+                replacements.usuario = usuario;
             }
-            if (queryParams.estado) {
-                query += queryParams.usuario ? ' AND' : ' WHERE';
-                query += ' f.estado = :estado';
-                replacements.estado = queryParams.estado;
+            if (factura && factura !== 'Todos') {
+                conditions.push('f.id_factura = :factura');
+                replacements.factura = factura;
+            }
+            if (fecha) {
+                conditions.push('DATE(f.fac_fechahora) = :fecha');
+                replacements.fecha = fecha;
+            }
+            if (estado && estado !== 'Todos') {
+                conditions.push('f.estado_fac = :estado');
+                replacements.estado = estado;
+            }
+
+            // Añadir las condiciones a la consulta
+            if (conditions.length > 0) {
+                query += ' WHERE ' + conditions.join(' AND ');
             }
         } else if (table === 'detalleFactura') {
             query = `
-                SELECT df.id_detalle, df.cantidad, p.nombre AS producto, f.id_factura
-                FROM detalles_factura df
-                INNER JOIN productos p ON df.id_producto = p.id_producto
-                INNER JOIN facturas f ON df.id_factura = f.id_factura
+                SELECT pf.id_factura, pf.id_producto, p.nombre AS producto, pf.pxf_cantidad, 
+                       pf.pxf_valor, pf.estado_pxf
+                FROM proxfac pf
+                INNER JOIN productos p ON pf.id_producto = p.id_producto
+                INNER JOIN facturas f ON pf.id_factura = f.id_factura
             `;
             if (queryParams.factura) {
                 query += ' WHERE f.id_factura = :factura';
@@ -737,12 +756,17 @@ app.get('/:table/select', async (req, res) => {
                 query += ' p.id_producto = :producto';
                 replacements.producto = queryParams.producto;
             }
+            if (queryParams.estado) {
+                query += queryParams.factura || queryParams.producto ? ' AND' : ' WHERE';
+                query += ' pf.estado_pxf = :estado';
+                replacements.estado = queryParams.estado;
+            }
         }
 
         // Ejecutar la consulta dinámica
-        const resultados = await db.query(query, {
+        const resultados = await dbA.query(query, {
             replacements,
-            type: QueryTypes.SELECT
+            type: QueryTypes.SELECT,
         });
 
         // Enviar los resultados al cliente
