@@ -769,6 +769,7 @@ app.get('/:table/select', async (req, res) => {
             replacements,
             type: QueryTypes.SELECT,
         });
+        console.log(query);
         console.log(resultados);
         // Enviar los resultados al cliente
         res.json(resultados);
