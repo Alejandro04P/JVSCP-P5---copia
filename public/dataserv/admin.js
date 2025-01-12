@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function handleAction(table, action, form) {
+    function handleAction(table, action, formData) {
         if (action !== 'select') {
             alert('Solo se permiten consultas.');
             return;
