@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <!-- Opciones dinámicas cargadas con nombres de productos -->
                     </select>
                     <label for="filtroFecha">Fecha:</label>
-                    <input type="date" id="filtroFecha" class="crud-input">
+                    <input type="date" id="filtroFecha" name = "filtroFecha" class="crud-input">
                     <label for="filtroEstado">Estado:</label>
                     <select id="filtroEstado" name = "filtroEstado" class="crud-input">
                         <option value="factura" selected>Todos</option>
@@ -115,13 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Crear un objeto para almacenar los datos del formulario
     const formDataObject = {};
 
-    // Recorrer el FormData y obtener claves y valores
     for (const [key, value] of formData.entries()) {
         const element = document.querySelector(`#${key}`); // Buscar el elemento HTML por ID
         if (element && element.tagName === 'SELECT') {
             // Obtener el texto del <option> seleccionado
             const selectedText = element.options[element.selectedIndex]?.text || '';
             formDataObject[key] = selectedText; // Guardar el texto del <option>
+        } else if (element && element.type === 'date') {
+            // Guardar el valor de la fecha en el formato YYYY-MM-DD
+            const formattedDate = value || ''; // Si no hay fecha seleccionada, dejar vacío
+            formDataObject[key] = formattedDate;
         } else {
             // Para otros tipos de campos (input, textarea), guardar el valor directamente
             formDataObject[key] = value;

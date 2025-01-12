@@ -677,15 +677,15 @@ app.get('/estados/factura', async (req, res) => {
 // Endpoint genérico para manejar las consultas
 app.get('/:table/select', async (req, res) => {
     const { table } = req.params; // Obtener la tabla desde la URL
-    let { usuario, factura, fecha, estado, producto } = req.query; // Obtener los parámetros de consulta
+    let { usuario, facturas, filtroEstado, filtroFecha, producto } = req.query; // Obtener los parámetros de consulta
 
     // Limpiar los parámetros de consulta
     usuario = usuario?.trim();
-    factura = factura?.trim();
-    fecha = fecha?.trim();
-    estado = estado?.trim();
+    facturas = facturas?.trim();
+    filtroFecha = filtroFecha?.trim();
+    filtroEstado = filtroEstado?.trim();
     producto = producto?.trim();
-    console.log('Datos: '+ usuario,factura,fecha,estado,producto,table);
+    console.log('Datos: '+ usuario,facturas,filtroFecha,filtroEstado,producto,table);
     // Verificar que la tabla sea válida
     const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
     if (!tablasPermitidas.includes(table)) {
