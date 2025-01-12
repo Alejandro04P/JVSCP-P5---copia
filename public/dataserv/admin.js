@@ -112,10 +112,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         // Crear un objeto para almacenar los datos del formulario
+       // Crear un objeto para almacenar los datos del formulario
         const formDataObject = {};
-    
-        // Iterar por los elementos del formulario
-        for (const element of form.elements) {
+
+        // Convertir form.elements a un array para iterar
+        Array.from(form.elements).forEach((element) => {
             if (element.tagName === 'SELECT') {
                 // Tomar el texto del option seleccionado
                 const selectedText = element.options[element.selectedIndex]?.text.trim();
@@ -124,10 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Para inputs y textareas, usar su valor
                 formDataObject[element.id] = element.value.trim();
             }
-        }
-    
+        });
+
         // Mostrar los datos en un alert para depuración
         alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
+
     
         // Construir los parámetros de consulta a partir de formDataObject
         const queryParams = new URLSearchParams(formDataObject).toString();
