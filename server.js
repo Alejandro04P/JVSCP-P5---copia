@@ -756,7 +756,7 @@ app.get('/:table/select', async (req, res) => {
                 filtroEstado = 'ACT';
             }else if (filtroEstado === 'Inactiva'){
                 filtroEstado = 'INA';
-            }else{
+            }else if (filtroEstado === 'Pendiente'){
                 filtroEstado = 'PEN';
             }
             query = `
