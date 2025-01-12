@@ -701,7 +701,7 @@ app.get('/:table/select', async (req, res) => {
         let id_usuario = '';
         let id_producto = '';
         // Si se filtra por usuario, obtener el id_usuario
-        if (usuario !== 'Todos') {
+        if (usuario !== 'Todos' && usuario) {
             const usuarioData = await dbA.query(
                 'SELECT id_usuario FROM usuarios WHERE username = :usuario',
                 {
