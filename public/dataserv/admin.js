@@ -110,10 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Solo se permiten consultas.');
         return;
     }
-
+      // Recorrer el FormData y construir un string con sus claves y valores
+      let formDataContent = 'Contenido del Formulario:\n';
+      for (const [key, value] of formData.entries()) {
+          formDataContent += `${key}: ${value}\n`;
+      }
+  
+      // Mostrar el contenido del FormData en un alert
+      alert(formDataContent);
     // Construir la URL con parámetros de consulta
     const queryParams = new URLSearchParams(formData).toString();
-    console.log('Datos enviados:', queryParams);
+
     const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
 
     // Realizar la solicitud GET
