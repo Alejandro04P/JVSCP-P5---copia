@@ -685,7 +685,7 @@ app.get('/:table/select', async (req, res) => {
     fecha = fecha?.trim();
     estado = estado?.trim();
     producto = producto?.trim();
-
+    console.log('Datos: '+ usuario,factura,fecha,estado,producto,table);
     // Verificar que la tabla sea válida
     const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
     if (!tablasPermitidas.includes(table)) {
