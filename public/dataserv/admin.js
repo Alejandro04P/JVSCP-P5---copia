@@ -105,46 +105,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function handleAction(table, action, formData) {
-    if (action !== 'select') {
-        alert('Solo se permiten consultas.');
-        return;
+    function handleAction(table, action, form) {
+        if (action !== 'select') {
+            alert('Solo se permiten consultas.');
+            return;
+        }
+    
+        // Crear un objeto para almacenar los datos del formulario
+        const formDataObject = {};
+    
+        // Iterar por los elementos del formulario
+        for (const element of form.elements) {
+            if (element.tagName === 'SELECT') {
+                // Tomar el texto del option seleccionado
+                const selectedText = element.options[element.selectedIndex]?.text.trim();
+                formDataObject[element.id] = selectedText;
+            } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                // Para inputs y textareas, usar su valor
+                formDataObject[element.id] = element.value.trim();
+            }
+        }
+    
+        // Mostrar los datos en un alert para depuración
+        alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
+    
+        // Construir los parámetros de consulta a partir de formDataObject
+        const queryParams = new URLSearchParams(formDataObject).toString();
+    
+        const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
+    
+        // Mostrar la URL generada para depuración
+        alert(`URL Generada:\n${url}`);
+    
+        // Realizar la solicitud GET
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                // Actualizar la tabla de resultados
+                actualizarTablaResultados(data);
+            })
+            .catch((error) => {
+                console.error('Error al realizar la consulta:', error);
+                alert('Hubo un error al realizar la consulta.');
+            });
     }
-      // Recorrer el FormData y construir un string con sus claves y valores
-      const formDataObject = {};
-
-      // Iterar por los elementos del formulario
-      for (const element of formData.elements) {
-          if (element.tagName === 'SELECT') {
-              // Tomar el texto del option seleccionado
-              const selectedText = element.options[element.selectedIndex]?.text;
-              formDataObject[element.id] = selectedText;
-          } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-              // Para inputs y textareas, usar su valor
-              formDataObject[element.id] = element.value;
-          }
-      }
-  
-      // Mostrar los datos en un alert
-      alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
-  
-    // Construir la URL con parámetros de consulta
-    const queryParams = new URLSearchParams(formData).toString();
-
-    const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
-
-    // Realizar la solicitud GET
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            // Actualizar la tabla de resultados
-            actualizarTablaResultados(data);
-        })
-        .catch(error => {
-            console.error('Error al realizar la consulta:', error);
-            alert('Hubo un error al realizar la consulta');
-        });
-}
+    
 
 // 2. Función para actualizar la tabla de resultados dinámicamente
 function actualizarTablaResultados(data) {
