@@ -88,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const form = formContainer.querySelector('form');
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
-                alert(form.elements); // Muestra los elementos del formulario
-
                 handleAction(selectedTable, action, new FormData(form));
             });
         
@@ -113,22 +111,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const formElements = formData.form.elements;
-        let message = 'Datos del formulario:\n';
+        
+    // Crear un objeto para almacenar los datos del formulario
+    const formDataObject = {};
 
-        for (let element of formElements) {
-            if (element.tagName === 'SELECT') {
-                // Obtener el texto del <option> seleccionado
-                const selectedText = element.options[element.selectedIndex].text;
-                message += `Campo: ${element.id}, Texto: ${selectedText}\n`;
-            } else {
-                // Usar el valor para otros tipos de campos
-                message += `Campo: ${element.id}, Valor: ${element.value}\n`;
-            }
+    // Recorrer el FormData y obtener claves y valores
+    for (const [key, value] of formData.entries()) {
+        const element = document.querySelector(`#${key}`); // Buscar el elemento HTML por ID
+        if (element && element.tagName === 'SELECT') {
+            // Obtener el texto del <option> seleccionado
+            const selectedText = element.options[element.selectedIndex]?.text || '';
+            formDataObject[key] = selectedText; // Guardar el texto del <option>
+        } else {
+            // Para otros tipos de campos (input, textarea), guardar el valor directamente
+            formDataObject[key] = value;
         }
+    }
 
-        // Mostrar en un alert para depuración
-        alert(message);
+    // Mostrar los datos en un alert para ver las claves y valores
+    alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
 
     
         // Construir los parámetros de consulta a partir de formDataObject
