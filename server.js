@@ -707,6 +707,7 @@ app.get('/:table/select', async (req, res) => {
                 query += ' p.id_producto = :producto';
                 replacements.producto = queryParams.producto;
             }
+          
         } else if (table === 'factura') {
             const { usuario, factura, fecha, estado } = queryParams; // Extraer parámetros
 
@@ -768,7 +769,7 @@ app.get('/:table/select', async (req, res) => {
             replacements,
             type: QueryTypes.SELECT,
         });
-
+        console.log(resultados);
         // Enviar los resultados al cliente
         res.json(resultados);
     } catch (error) {
