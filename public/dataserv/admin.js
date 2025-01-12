@@ -139,10 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const queryParams = new URLSearchParams(formDataObject).toString();
     
         const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
-    
-        // Mostrar la URL generada para depuración
-        alert(`URL Generada:\n${url}`);
-    
+        
         // Realizar la solicitud GET
         fetch(url)
             .then((response) => response.json())

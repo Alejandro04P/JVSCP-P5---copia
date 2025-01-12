@@ -713,7 +713,7 @@ app.get('/:table/select', async (req, res) => {
             id_usuario = usuarioData[0]?.id_usuario || '';
         }
 
-        if (producto && producto.includes("Relleno:")) {
+        if (producto.includes("Relleno:")) {
             [nombreProducto, rellenoProducto] = producto.split("Relleno:").map(s => s.trim());
 
             const productoData = await dbA.query(
@@ -751,7 +751,14 @@ app.get('/:table/select', async (req, res) => {
                 replacements.producto = id_producto;
             }
         } else if (table === 'factura') {
-            facturas 
+          // Lógica de actualización en la base de datos
+            if(filtroEstado === 'Activa'){
+                estado = 'ACT';
+            }else if (filtroEstado === 'Inactiva'){
+                estado = 'INA';
+            }else{
+                estado = 'PEN';
+            }
             query = `
                 SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, 
                        TO_CHAR(f.fac_fechahora, 'YYYY-MM-DD') AS fac_fecha, 
@@ -770,7 +777,7 @@ app.get('/:table/select', async (req, res) => {
                 replacements.facturas = facturas;
             }
             if (filtroFecha) {
-                conditions.push("TO_CHAR(f.fac_fechahora, 'YYYY-MM-DD') = :filtroFecha");
+                conditions.push("DATE(f.fac_fechahora) BETWEEN :filtroFecha AND CURRENT_DATE");
                 replacements.filtroFecha = filtroFecha;
             }
             if (filtroEstado && filtroEstado !== 'Todos') {
