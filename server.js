@@ -656,7 +656,7 @@ app.get('/estados/factura', async (req, res) => {
 
         // Buscar el estado de la factura en la base de datos
         const estadoFactura = await dbA.query(`
-            SELECT DISTINCT f.ESTADO_FAC 
+            SELECT f.estado_fac
             FROM FACTURAS f
             WHERE f.id_Factura = :factura
         `, {
@@ -667,14 +667,8 @@ app.get('/estados/factura', async (req, res) => {
         if (!estadoFactura || estadoFactura.length === 0) {
             return res.status(404).json({ error: 'No se encontró la factura especificada.' });
         }
-      
-        // Formatear la respuesta como un arreglo de objetos con value y label
-        const estados = estadoFactura.map(estado => ({
-            value: estado.ESTADO_FAC,
-            label: estado.ESTADO_FAC
-        }));
-        console.log(estados,factura);
-        res.json(estados); // Enviar los estados al cliente
+        console.log(estadoFactura,factura);
+        res.json(estadoFactura); // Enviar los estados al cliente
     } catch (error) {
         console.error('Error al obtener estados por factura:', error);
         res.status(500).json({ error: 'Ocurrió un error al obtener los estados de la factura.' });
