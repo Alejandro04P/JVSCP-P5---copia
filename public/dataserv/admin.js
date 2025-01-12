@@ -131,15 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Mostrar los datos en un alert para ver las claves y valores
-    alert(`Datos del Formulario:\n${JSON.stringify(formDataObject, null, 2)}`);
-
-    
         // Construir los parámetros de consulta a partir de formDataObject
         const queryParams = new URLSearchParams(formDataObject).toString();
     
         const url = `https://nodejs-production-0097.up.railway.app/${table}/select?${queryParams}`;
-        
+
         // Realizar la solicitud GET
         fetch(url)
             .then((response) => response.json())
