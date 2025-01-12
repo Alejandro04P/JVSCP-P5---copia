@@ -267,7 +267,7 @@ function actualizarTablaResultados(data) {
                 const select = document.querySelector(selector);
                 if (select) {
                     select.innerHTML =   `<option value = "userpro" selected>Todos</option>` +
-                        data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
+                    data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion} Relleno: ${producto.pro_relleno}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar productos:', error));
@@ -305,8 +305,8 @@ function actualizarTablaResultados(data) {
             .then(data => {
                 const select = document.querySelector(selector);
                 if (select) {
-                    select.innerHTML = 
-                        data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion}</option>`).join('');
+                    select.innerHTML = `<option value = "clifac" selected>Todos</option>` +
+                    data.map(producto => `<option value="${producto.id_producto}">${producto.pro_descripcion} Relleno: ${producto.pro_relleno}</option>`).join('');
                 }
             })
             .catch(error => console.error('Error al cargar productos:', error));

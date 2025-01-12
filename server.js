@@ -504,7 +504,7 @@ app.get('/productos', async (req, res) => {
         if(!usuario){
            
             productos = await dbA.query(`
-                SELECT DISTINCT c.id_producto, p.pro_descripcion, c.cantidad, c.valor_unitario
+                SELECT DISTINCT c.id_producto, p.pro_descripcion, c.cantidad, c.valor_unitario, p.pro_relleno
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
             `, {
@@ -513,7 +513,7 @@ app.get('/productos', async (req, res) => {
             });
         }else{
             productos = await dbA.query(`
-                SELECT DISTINCT c.id_producto, p.pro_descripcion, c.cantidad, c.valor_unitario
+                SELECT DISTINCT c.id_producto, p.pro_descripcion, c.cantidad, c.valor_unitario,p.pro_relleno
                 FROM carrito c
                 JOIN productos p ON c.id_producto = p.id_producto
                 WHERE c.id_usuario = :usuario
@@ -537,7 +537,7 @@ app.get('/productos/fac', async (req, res) => {
         if(!factura){
            
             productos = await dbA.query(`
-                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor,p.pro_relleno
                 FROM proxfac pf
                 JOIN productos p ON pf.id_producto = p.id_producto
             `, {
@@ -546,7 +546,7 @@ app.get('/productos/fac', async (req, res) => {
             });
         }else{
             productos = await dbA.query(`
-                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor
+                SELECT DISTINCT pf.id_producto, p.pro_descripcion, pf.pxf_cantidad, pf.pxf_valor,p.pro_relleno
                 FROM proxfac pf
                 JOIN productos p ON pf.id_producto = p.id_producto
                 WHERE pf.id_factura = :factura
@@ -685,7 +685,9 @@ app.get('/:table/select', async (req, res) => {
     filtroFecha = filtroFecha?.trim();
     filtroEstado = filtroEstado?.trim();
     producto = producto?.trim();
-    console.log('Datos: '+ usuario,facturas,filtroFecha,filtroEstado,producto,table);
+
+    console.log('Datos: ', { usuario, facturas, filtroFecha, filtroEstado, producto, table });
+
     // Verificar que la tabla sea válida
     const tablasPermitidas = ['carrito', 'factura', 'detalleFactura'];
     if (!tablasPermitidas.includes(table)) {
@@ -695,7 +697,40 @@ app.get('/:table/select', async (req, res) => {
     try {
         let query = '';
         const replacements = {};
+        let id_usuario = '';
 
+        // Si se filtra por usuario, obtener el id_usuario
+        if (usuario !== 'Todos') {
+            const usuarioData = await dbA.query(
+                'SELECT id_usuario FROM usuarios WHERE username = :usuario',
+                {
+                    type: QueryTypes.SELECT,
+                    replacements: { usuario },
+                }
+            );
+
+            id_usuario = usuarioData[0]?.id_usuario || '';
+        }
+
+        if (producto.includes("Relleno:")) {
+            [nombreProducto, rellenoProducto] = producto.split("Relleno:").map(s => s.trim());
+
+            const productoData = await dbA.query(
+                `SELECT id_producto 
+                 FROM productos 
+                 WHERE pro_descripcion LIKE :nombreProducto 
+                   AND pro_relleno LIKE :rellenoProducto`,
+                {
+                    type: QueryTypes.SELECT,
+                    replacements: { 
+                        nombreProducto: `%${nombreProducto}%`,
+                        rellenoProducto: `%${rellenoProducto}%`,
+                    },
+                }
+            );
+
+            id_producto = productoData[0]?.id_producto || '';
+        }
         // Construir consultas dinámicas dependiendo de la tabla
         if (table === 'carrito') {
             query = `
@@ -705,78 +740,78 @@ app.get('/:table/select', async (req, res) => {
                 INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
                 INNER JOIN productos p ON c.id_producto = p.id_producto
             `;
-            if (usuario) {
+            if (usuario && id_usuario) {
                 query += ' WHERE u.id_usuario = :usuario';
-                replacements.usuario = usuario;
+                replacements.usuario = id_usuario;
             }
-            if (producto) {
-                query += usuario ? ' AND' : ' WHERE';
+            if (producto && id_producto) {
+                query += id_usuario ? ' AND' : ' WHERE';
                 query += ' p.id_producto = :producto';
-                replacements.producto = producto;
+                replacements.producto = id_producto;
             }
         } else if (table === 'factura') {
             query = `
-                SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, f.fac_fechahora, 
+                SELECT f.id_factura, u.username AS usuario, f.fac_descripcion, 
+                       TO_CHAR(f.fac_fechahora, 'YYYY-MM-DD') AS fac_fecha, 
                        f.fac_subtotal, f.fac_iva, f.fac_total, f.estado_fac
                 FROM facturas f
                 INNER JOIN usuarios u ON f.id_usuario = u.id_usuario
             `;
 
             const conditions = [];
-            if (usuario && usuario !== 'Todos') {
+            if (usuario && id_usuario) {
                 conditions.push('u.id_usuario = :usuario');
-                replacements.usuario = usuario;
+                replacements.usuario = id_usuario;
             }
-            if (factura && factura !== 'Todos') {
-                conditions.push('f.id_factura = :factura');
-                replacements.factura = factura;
+            if (facturas && facturas !== 'Todos') {
+                conditions.push('TRIM(f.id_factura) = :facturas');
+                replacements.facturas = facturas;
             }
-            if (fecha) {
-                conditions.push('DATE(f.fac_fechahora) = :fecha');
-                replacements.fecha = fecha;
+            if (filtroFecha) {
+                conditions.push("TO_CHAR(f.fac_fechahora, 'YYYY-MM-DD') = :filtroFecha");
+                replacements.filtroFecha = filtroFecha;
             }
-            if (estado && estado !== 'Todos') {
-                conditions.push('f.estado_fac = :estado');
-                replacements.estado = estado;
+            if (filtroEstado && filtroEstado !== 'Todos') {
+                conditions.push('f.estado_fac = :filtroEstado');
+                replacements.filtroEstado = filtroEstado;
             }
 
             // Añadir las condiciones a la consulta
             if (conditions.length > 0) {
                 query += ' WHERE ' + conditions.join(' AND ');
             }
-        } else if (table === 'detalleFactura') {
+        }  else if (table === 'detalleFactura') {
             query = `
-                SELECT pf.id_factura, pf.id_producto, p.pro_descripcion AS producto, pf.pxf_cantidad, 
-                       pf.pxf_valor, pf.estado_pxf
+                SELECT pf.id_factura, pf.id_producto, p.pro_descripcion AS producto, 
+                       pf.pxf_cantidad, pf.pxf_valor, pf.estado_pxf
                 FROM proxfac pf
                 INNER JOIN productos p ON pf.id_producto = p.id_producto
                 INNER JOIN facturas f ON pf.id_factura = f.id_factura
             `;
-            if (factura) {
-                query += ' WHERE f.id_factura = :factura';
-                replacements.factura = factura;
+            if (facturas) {
+                query += ' WHERE TRIM(f.id_factura) = :facturas';
+                replacements.facturas = facturas;
             }
-            if (producto) {
-                query += factura ? ' AND' : ' WHERE';
+            if (producto && id_producto) {
+                query += facturas ? ' AND' : ' WHERE';
                 query += ' p.id_producto = :producto';
-                replacements.producto = producto;
+                replacements.producto = id_producto;
             }
-            if (estado) {
-                query += factura || producto ? ' AND' : ' WHERE';
-                query += ' pf.estado_pxf = :estado';
-                replacements.estado = estado;
+            if (filtroEstado) {
+                query += facturas || producto ? ' AND' : ' WHERE';
+                query += ' pf.estado_pxf = :filtroEstado';
+                replacements.filtroEstado = filtroEstado;
             }
         }
-
         // Ejecutar la consulta dinámica
         const resultados = await dbA.query(query, {
             replacements,
             type: QueryTypes.SELECT,
         });
 
-        console.log(query); // Log de la consulta generada
-        console.log(replacements); // Log de los valores de reemplazo
-        console.log(resultados); // Log de los resultados
+        console.log('Consulta generada:', query); // Log de la consulta generada
+        console.log('Reemplazos:', replacements); // Log de los valores de reemplazo
+        console.log('Resultados:', resultados); // Log de los resultados
         res.json(resultados); // Enviar los resultados al cliente
     } catch (error) {
         console.error('Error al realizar la consulta:', error);
