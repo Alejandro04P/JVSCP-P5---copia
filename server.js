@@ -692,7 +692,7 @@ app.get('/:table/select', async (req, res) => {
         // Construir consultas dinámicas dependiendo de la tabla
         if (table === 'carrito') {
             query = `
-                SELECT c.id_carrito, u.username AS usuario, p.nombre AS producto, c.cantidad, 
+                SELECT c.id_carrito, u.username AS usuario, p.pro_descripcion AS producto, c.cantidad, 
                        c.valor_unitario, c.estado_carrito, c.fecha_agregado
                 FROM carrito c
                 INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
@@ -741,7 +741,7 @@ app.get('/:table/select', async (req, res) => {
             }
         } else if (table === 'detalleFactura') {
             query = `
-                SELECT pf.id_factura, pf.id_producto, p.nombre AS producto, pf.pxf_cantidad, 
+                SELECT pf.id_factura, pf.id_producto, p.pro_descripcion AS producto, pf.pxf_cantidad, 
                        pf.pxf_valor, pf.estado_pxf
                 FROM proxfac pf
                 INNER JOIN productos p ON pf.id_producto = p.id_producto
