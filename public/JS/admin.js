@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         factura: {
             select: `
-               <form>
+            <form>
                     <h3>Filtrar Registros de las Facturas</h3>
                     <label for="filtroUsuario">Usuario:</label>
                     <select id="usuario" name = "usuario" class="crud-input">
