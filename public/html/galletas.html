@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../CSS/media q.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Tienda de Repostería</title>
 </head>
 <body>
@@ -36,9 +37,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Productos</a>
                         <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="productsDropdown">
-                            <li><a class="dropdown-item" href="../html/pasteles.html">Pasteles</a></li>
-                            <li><a class="dropdown-item" href="../html/donas.html">Donas</a></li>
-                            <li><a class="dropdown-item" href="../html/galletas.html">Galletas</a></li>
+                            <li><a class="dropdown-item" href="../html/pasteles.html?categoria=1">Pasteles</a></li>
+                            <li><a class="dropdown-item" href="../html/donas.html?categoria=2">Donas</a></li>
+                            <li><a class="dropdown-item" href="../html/galletas.html?categoria=1">Galletas</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="../html/contacto.html">Contacto</a></li>
@@ -53,196 +54,19 @@
     </nav>
     <div class="contfin">
         <div class="left-image">
-            <img src="../imagenes/galleizq.jpeg"alt= "Imagen de Repostería">
+            <img src="../imagenes/pastelizq.jpeg"alt= "Imagen de Repostería">
         </div>
-    
         <div class="product-section">
-        <main class="product-grid">
-            <div class="product">
-                <img src="../imagenes/gchoco.jpg" alt="Galleta de Chocolate">
-                <h3 class="card-title">Galleta de Chocolate</h3>
-                <h3 class="card-price">$3.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-    
-            <div class="product">
-                <img src="../imagenes/galletaa.jpg"   alt="Galleta de Avena">
-                <h3 class="card-title">Galleta de Avena</h3>
-                <h3 class="card-price">$2.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart " onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/gmaca.jpeg" alt="Galleta de Avena">
-                <h3 class="card-title">Galleta de Macadamia</h3>
-                <h3 class="card-price">$2.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/gsnerk.jpeg"  alt="Galleta de Avena">
-                <h3 class="card-title">Galleta de Snickerdoodle</h3>
-                <h3 class="card-price">$2.39</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/gred.jpeg"  alt="Galleta de Avena">
-                <h3 class="card-title">Galleta Red Velvet</h3>
-                <h3 class="card-price">$1.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <script>
-                function increaseQuantity(button) {
-                    let quantityInput = button.previousElementSibling;
-                    quantityInput.value = parseInt(quantityInput.value) + 1;
-                }
-    
-                function decreaseQuantity(button) {
-                    let quantityInput = button.nextElementSibling;
-                    if (quantityInput.value > 1) {
-                        quantityInput.value = parseInt(quantityInput.value) - 1;
-                    }
-                }
-            </script>
-            <div class="product">
-                <img src="../imagenes/gn.jpg"  alt="Galleta de Nuez">
-                <h3 class="card-title">Galleta de Nuez</h3>
-                <h3 class="card-price">$3.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/glimon.jpeg"  alt="Galleta de Nuez">
-                <h3 class="card-title">Galleta Limón</h3>
-                <h3 class="card-price">$1.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/galmen.jpeg"  alt="Galleta de Nuez">
-                <h3 class="card-title">Galleta de Almendra</h3>
-                <h3 class="card-price">$2.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-            <div class="product">
-                <img src="../imagenes/gcarame.jpeg"  alt="Galleta de Nuez">
-                <h3 class="card-title">Galleta de Caramelo</h3>
-                <h3 class="card-price">$2.99</h3>
-                <p>Selecciona tu tipo de relleno:</p>
-                <select class="flavor-select">
-                    <option value="chispas">Chocolate</option>
-                    <option value="vainilla">Vainilla</option>
-                    <option value="nuez">Manjar</option>
-                    <option value="avena">Mermelada de Frutos Rojos</option>
-                </select>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-                    <input type="number" class="quantity" value="1" min="1" />
-                    <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
-                </div>
-                <button class="add-to-cart" onclick="carritoInsert(this);addToCart(this);">Añadir al carrito</button>
-            </div>
-        </main>
+            <main class="product-grid">
+                </main>
         </div>
     </div>
+
     <div id="social-icons" class="social-icons">
         <a href="#"><img src="../imagenes/fca.jpg" alt="Facebook"></a>
         <a href="#"><img src="../imagenes/igca.jpg" alt="Instagram"></a>
         <a href="#"><img src="../imagenes/waca.jpg" alt="WhatsApp"></a>
     </div>
-   
 
     <footer class="footer">
         <div class="containerfot">
@@ -269,9 +93,9 @@
             <p>&copy; 2024 Tienda de Repostería. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script src="../JS/funcionalidad.js"></script>
+    <script src="../JS/funcion.js"></script>
     <script src="../JS/iniciarsecion.js"></script>
-    <script src="../dataserv/carritofn.js"></script>
+    <!-- <script src="../dataserv/carritofn.js"></script> -->
 </body>
 </html>
 

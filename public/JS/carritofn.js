@@ -34,66 +34,66 @@
             console.error('Error:', error);
         });
 }
-function carritoInsert(button){
-    const productCard = button.closest('.product');
-    const username = localStorage.getItem('username'); // Asume que el username está en localStorage
-    const nombre_producto = productCard.querySelector('.card-title').textContent.trim(); // Obtiene el texto del producto
-    const cantidad = parseInt(productCard.querySelector('.quantity').value, 10);
-    const valor_unitario = parseFloat(productCard.querySelector('.card-price').textContent.replace('$', ''));
-    const url = 'https://nodejs-production-0097.up.railway.app/carro';
-    const rellenos = productCard.querySelector('.flavor-select');
-    const relleno = rellenos.options[rellenos.selectedIndex].textContent;
-    const image = productCard.querySelector('img').getAttribute('src'); // Obtén la URL de la imagen
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-     // Crear objeto del producto
-     const product = {
-        nombre_producto,
-        valor_unitario,
-        quantity: cantidad,
-        relleno,
-        image,
-    };
-    // Buscar si el producto ya existe en el carrito (comparando nombre y relleno)
-    const existingProduct = cart.find(
-        (item) => 
-            item.nombre_producto === product.nombre_producto && 
-            item.relleno === product.relleno
-    );
+// carritofn.js
 
-    if (existingProduct) {
-        // Si el producto existe, incrementa la cantidad
-        existingProduct.quantity += product.quantity;
-    } else {
-        // Si no existe, agrega el producto al carrito
-        cart.push(product);
+function addToCart(buttonElement) {
+    const productId = $(buttonElement).data('product-id');
+    const productName = $(buttonElement).data('product-name');
+    const productPrice = $(buttonElement).data('product-price');
+    const quantity = $(buttonElement).siblings('.quantity-selector').find('.quantity').val();
+    const selectedFlavor = $(buttonElement).siblings('.flavor-select').val();
+
+    // Basic validation
+    if (!productId || !productName || !productPrice || !quantity || quantity < 1) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Información del producto incompleta. Por favor, intente de nuevo.'
+        });
+        return;
     }
 
-    // Guardar el carrito actualizado en localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
-     
+    const cartItem = {
+        productoId: productId, // Assuming your API expects 'productoId'
+        nombre: productName,
+        precioUnitario: parseFloat(productPrice), // Ensure price is a number
+        cantidad: parseInt(quantity), // Ensure quantity is an integer
+        saborRelleno: selectedFlavor // Add the selected flavor/filling
+    };
 
-    fetch(url, {
+    $.ajax({
+        url: 'http://tiendabackend.runasp.net/api/gestion/carrito',
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+        contentType: 'application/json', // Important for sending JSON data
+        data: JSON.stringify(cartItem), // Convert the JavaScript object to a JSON string
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Añadido al carrito!',
+                text: `${productName} (${selectedFlavor}) x ${quantity} ha sido añadido a tu carrito.`
+            });
+            // You might want to update a cart icon counter here
         },
-        body: JSON.stringify({ username, nombre_producto, cantidad, valor_unitario,relleno,image }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-
-            } else {
-                alert('Error: ' + data.message);
+        error: function(xhr, status, error) {
+            console.error('Error adding to cart:', xhr.responseText);
+            let errorMessage = 'Hubo un error al añadir el producto al carrito.';
+            try {
+                const errorResponse = JSON.parse(xhr.responseText);
+                if (errorResponse && errorResponse.message) {
+                    errorMessage = errorResponse.message;
+                }
+            } catch (e) {
+                // If responseText is not valid JSON, use generic message
             }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Ocurrió un error al añadir al carrito');
-        });
 
- }
-
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+}
 function carritoRemove(button){
     const productCard = button.closest('.cart-item'); // Encuentra el contenedor del producto
     const username = localStorage.getItem('username'); // Obtener el username almacenado
