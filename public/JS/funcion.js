@@ -71,7 +71,7 @@ function cargarProductosPorCategoria(categoriaATraer) {
                         <h3 class="card-title">${producto.pro_nombre}</h3>
                         <h3 class="card-price">$${producto.pro_precio_venta.toFixed(2)}</h3>
                         <p>Relleno:</p>
-                        <h3 class="card-title">${producto.pro_relleno}</h3>           
+                        <h3 class="card-title">${producto.pro_relleno}</h3>           
                         <div class="quantity-selector">
                             <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
                             <input type="number" class="quantity" value="1" min="1" />
@@ -80,8 +80,8 @@ function cargarProductosPorCategoria(categoriaATraer) {
                         <button class="add-to-cart"
                             data-product-id="${producto.id_producto}"
                             data-product-name="${producto.pro_nombre}"
-                            data-product-price="${producto.pro_precio_ventaprecio}"
-                            onclick="addToCart(this)">Añadir al carrito</button>
+                            data-product-price="${producto.pro_precio_venta.toFixed(2)}"
+                            data-product-image="${producto.img}"       data-product-flavor="${producto.pro_relleno}" onclick="addToCart(this)">Añadir al carrito</button>
                     </div>
                 `;
                 productGrid.append(productHtml);

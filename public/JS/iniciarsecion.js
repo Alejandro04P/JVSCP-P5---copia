@@ -39,6 +39,7 @@ function updateNavbar(isLoggedIn, username) {
 
             // Limpiar datos de sesión
             localStorage.removeItem('loggedIn');
+            localStorage.removeItem('idUser');
             localStorage.removeItem('username');
             localStorage.removeItem('cart'); // ✅ Mantenemos la limpieza del carrito
 

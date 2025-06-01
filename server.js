@@ -45,7 +45,7 @@ app.use('/api/gestion', async (req, res) => {
         res.status(response.status);
 
         const text = await response.text();
-       
+
         // Intenta devolver JSON si se puede, de lo contrario, envía texto plano
         try {
             res.json(JSON.parse(text));

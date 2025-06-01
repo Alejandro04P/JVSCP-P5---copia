@@ -1,81 +1,115 @@
+const API_GET_USER_ID = "/api/gestion/usuarios/user"; 
+const API_CARRITOS = "/api/gestion/carrito";
 
- function carritoUpdate(button) {
-    const productCard = button.closest('.cart-item'); // Encuentra el contenedor del producto
-    const quantity = parseInt(productCard.querySelector('.quantity').value, 10); // Nueva cantidad
-    const username = localStorage.getItem('username'); // Obtener el username almacenado
-    const nombre_producto = productCard.querySelector('.product-title').textContent.trim(); // Obtiene el texto del producto
-    const relleno = productCard.querySelector('.product-flavor').textContent
-    .replace('Relleno: ', '') // Reemplaza "Relleno: " con una cadena vacía
-    .trim(); // Elimina espacios en blanco adicionales
-
-    fetch('https://nodejs-production-0097.up.railway.app/carroup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username,
-            cantidad: quantity, // Cantidad actualizada
-            nombre_producto,
-            relleno
-        }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                console.log(data.message);
-           
-            } else {
-                console.error(data.message);
-                alert('Error al actualizar el carrito');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
 // carritofn.js
 
+
 function addToCart(buttonElement) {
+    // 1. Obtener datos directamente de los atributos data- del botón
     const productId = $(buttonElement).data('product-id');
     const productName = $(buttonElement).data('product-name');
-    const productPrice = $(buttonElement).data('product-price');
-    const quantity = $(buttonElement).siblings('.quantity-selector').find('.quantity').val();
-    const selectedFlavor = $(buttonElement).siblings('.flavor-select').val();
+    const productPrice = parseFloat($(buttonElement).data('product-price'));
+    const productImage = $(buttonElement).data('product-image');
+    const selectedFlavor = $(buttonElement).data('product-flavor');
 
-    // Basic validation
-    if (!productId || !productName || !productPrice || !quantity || quantity < 1) {
+    // Obtener la cantidad del input dentro del quantity-selector
+    const quantity = parseInt($(buttonElement).siblings('.quantity-selector').find('.quantity').val(), 10);
+
+    // Obtener el username del localStorage
+    const username = localStorage.getItem('username');
+
+    // 2. Validación inicial: Asegurarse de que tenemos la información mínima necesaria
+    if (!productId || !productName || isNaN(productPrice) || isNaN(quantity) || quantity < 1 || !username || !productImage || !selectedFlavor) {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Información del producto incompleta. Por favor, intente de nuevo.'
+            text: 'Información del producto o nombre de usuario incompleta. Por favor, asegúrese de haber iniciado sesión y que todos los datos del producto estén disponibles.'
         });
-        return;
+        return; // Detener la ejecución si la validación falla
     }
 
-    const cartItem = {
-        productoId: productId, // Assuming your API expects 'productoId'
-        nombre: productName,
-        precioUnitario: parseFloat(productPrice), // Ensure price is a number
-        cantidad: parseInt(quantity), // Ensure quantity is an integer
-        saborRelleno: selectedFlavor // Add the selected flavor/filling
-    };
+    // --- Lógica para obtener el userId (optimizado con localStorage) ---
+    let userId = localStorage.getItem('idUser'); // Intenta obtener el userId de localStorage
 
+    if (userId) {
+        // Si el userId ya está en localStorage, procede directamente a añadir al carrito
+        console.log("UserID encontrado en localStorage. Procediendo con la operación del carrito.");
+        // Llama a la función que maneja el envío al backend
+        proceedToAddToCartBackend(userId, productId, productName, productPrice, quantity, selectedFlavor, productImage,selectedFlavor);
+    } else {
+        // Si el userId NO está en localStorage, haz la llamada GET al backend para obtenerlo
+        console.log("UserID no encontrado en localStorage. Obteniendo del backend...");
+        $.ajax({
+            url: `${API_GET_USER_ID}?username=${encodeURIComponent(username)}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.id_usuario) {
+                    const retrievedUserId = response.id_usuario; // Usar una variable diferente para evitar confusión
+                    localStorage.setItem("idUser", retrievedUserId); // <-- **CORRECCIÓN DE SINTAXIS Y VARIABLE AQUÍ**
+                    console.log("UserID obtenido del backend y guardado en localStorage:", retrievedUserId);
+                    // Llama a la función que maneja el envío al backend con el userId obtenido
+                    proceedToAddToCartBackend(retrievedUserId, productId, productName, productPrice, quantity, selectedFlavor, productImage);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de usuario',
+                        text: response.message || 'No se pudo obtener el ID de usuario. Por favor, intente iniciar sesión de nuevo.'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al obtener el ID de usuario:', xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor para obtener la información del usuario. Intente de nuevo más tarde.'
+                });
+            }
+        });
+    }
+}
+
+// Función auxiliar para manejar la lógica de envío del item al backend
+// Se extrae para evitar duplicación de código y mejorar la claridad.
+function proceedToAddToCartBackend(userId, productId, productName, productPrice, quantity, selectedFlavor, productImage,rellenos) {
+    // Construye el objeto cartItem aquí, asegurándote de que `userId` es el correcto.
+    const cartItem = {
+        id_usuario: userId, // ID del usuario, ya sea de localStorage o del backend
+        id_producto: productId,
+        valor_unitario: productPrice,
+        cantidad: quantity, // Envía la cantidad que se está añadiendo (el backend la sumará si ya existe)
+        imagen: productImage, // Incluir imagen para el backend
+        estado_carrito: 'ACT',
+        fecha_agregado: new Date().toISOString(),
+        nombre: productName,
+        relleno: rellenos,
+    };
+    console.log("Item a enviar al backend para operación de carrito:", cartItem);
+
+    // Paso final: Realizar la petición AJAX para añadir el producto al carrito
     $.ajax({
-        url: 'http://tiendabackend.runasp.net/api/gestion/carrito',
+        url: API_CARRITOS, // Asegúrate de que API_CARRITO apunta al endpoint correcto
         method: 'POST',
-        contentType: 'application/json', // Important for sending JSON data
-        data: JSON.stringify(cartItem), // Convert the JavaScript object to a JSON string
+        contentType: 'application/json',
+        data: JSON.stringify(cartItem),
         success: function(response) {
-            Swal.fire({
-                icon: 'success',
-                title: '¡Añadido al carrito!',
-                text: `${productName} (${selectedFlavor}) x ${quantity} ha sido añadido a tu carrito.`
-            });
-            // You might want to update a cart icon counter here
+            if (response == "OK") {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Operación Exitosa!',
+                    text: response.message || `${productName} (${selectedFlavor}) x ${quantity} ha sido añadido/actualizado en tu carrito.`
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message || 'Hubo un error en la operación del carrito.'
+                });
+            }
         },
         error: function(xhr, status, error) {
-            console.error('Error adding to cart:', xhr.responseText);
+            console.error('Error al añadir al carrito:', xhr.responseText);
             let errorMessage = 'Hubo un error al añadir el producto al carrito.';
             try {
                 const errorResponse = JSON.parse(xhr.responseText);
@@ -83,9 +117,8 @@ function addToCart(buttonElement) {
                     errorMessage = errorResponse.message;
                 }
             } catch (e) {
-                // If responseText is not valid JSON, use generic message
+                // Si responseText no es JSON válido, usar el mensaje genérico
             }
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',

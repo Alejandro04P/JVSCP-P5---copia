@@ -1,5 +1,5 @@
 
-
+/*
 // Aplicar el fondo guardado al cargar la página
 window.onload = function () {
     const fondoGuardado = localStorage.getItem('fondo'); // Recuperar preferencia guardada
@@ -28,3 +28,4 @@ window.onload = function () {
         });
     }
 };
+*/
