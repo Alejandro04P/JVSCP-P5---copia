@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ya no necesitas obtener la categoría de los parámetros de la URL
     // const urlParams = new URLSearchParams(window.location.search);
     // const categoriaIdSeleccionada = urlParams.get('categoria'); 
-
     // ✅ Nueva lógica: Detecta en qué archivo HTML estás y asigna la categoría correspondiente
     const currentPath = window.location.pathname;
     let categoriaACargar = null; // Inicializamos a null

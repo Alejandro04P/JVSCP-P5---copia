@@ -73,10 +73,10 @@
     
                 <!-- Sección de totales -->
                 <div class="inter-left mt-4">
-                    <h3>Subtotal: <span class="total-price">$0</span></h3>
-                    <h3>IVA: <span class="total-price">15%</span></h3>
-                    <h3>Total: <span class="total-ivprice">$0</span></h3>
-                    <button class="checkout-button"> <a href="../pages/factura.html">Pagar</a></button>
+                    <h3 id="subtotal">Subtotal: <span class="total-price">$0</span></h3>
+                    <h3 id="iva">IVA: <span class="total-price">15%</span></h3>
+                    <h3 id="total">Total: <span class="total-ivprice">$0</span></h3>
+                    <button class="checkout-button" onclick="crearFactura(this)">Pagar</button>
                     <div class="promotion-section">
                         <h4>Promociones</h4>
                         <input type="text" placeholder="Introducir el cupón">
@@ -173,9 +173,10 @@
             }
         }
     </script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../JS/iniciarsecion.js"></script> 
     <script src="../JS/carritofn.js"></script>
     <script src="../JS/carrito.js"></script>
+    <script src="../JS/factura.js"></script>
 </body>
 </html>
